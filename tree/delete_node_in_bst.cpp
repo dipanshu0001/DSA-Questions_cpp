@@ -81,7 +81,7 @@ bst *bst::delete_in_bst(bst *head, int val)
     }
     else
     {
-        //// we need to shit the tree with large height as diamtere of tree will reduce 4 
+        //// we need to shit the tree with large height as diamtere of tree will reduce 
         if (height(head->right) > height(head->left))
         {
             bst *q = in_sucess(head->right);
