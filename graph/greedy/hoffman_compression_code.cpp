@@ -10,7 +10,8 @@ Assign variable length to unqiue character
 hight freq char get lowest code 
 low freq char get hiaghest code
 all code assigned in a way that each code doeasnt have a same prefix 
-
+time compexity is nlogn
+space is o(fre vector size)
 */
 struct minheap
 {
