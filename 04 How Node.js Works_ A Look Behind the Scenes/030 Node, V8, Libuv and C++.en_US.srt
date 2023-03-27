@@ -1,0 +1,284 @@
+1
+00:00:01,170 --> 00:00:02,830
+Now, in order to set the stage
+
+2
+00:00:02,830 --> 00:00:04,710
+for the next couple of lectures,
+
+3
+00:00:04,710 --> 00:00:08,083
+let's start by learning a bit about Node architecture.
+
+4
+00:00:09,430 --> 00:00:11,980
+So let's represent that architecture here
+
+5
+00:00:11,980 --> 00:00:14,610
+in terms of Node's dependencies,
+
+6
+00:00:14,610 --> 00:00:16,620
+which are just a couple of libraries
+
+7
+00:00:16,620 --> 00:00:20,300
+that Node depends on in order to work properly.
+
+8
+00:00:20,300 --> 00:00:23,320
+So the Node run time has several dependencies,
+
+9
+00:00:23,320 --> 00:00:25,010
+and the most important ones are
+
+10
+00:00:25,010 --> 00:00:29,030
+the V8 (mumbles) engine and libuv.
+
+11
+00:00:29,030 --> 00:00:32,800
+Now we said before that Node is a JavaScript run time
+
+12
+00:00:32,800 --> 00:00:35,570
+based on Google's V8 engine, right?
+
+13
+00:00:35,570 --> 00:00:39,140
+And so, that is why it appears here as a dependency.
+
+14
+00:00:39,140 --> 00:00:42,620
+If it wasn't for V8, Node would have absolutely no
+
+15
+00:00:42,620 --> 00:00:45,980
+way of understanding the JavaScript code that we write.
+
+16
+00:00:45,980 --> 00:00:48,770
+And therefore, V8 is a fundamental part
+
+17
+00:00:48,770 --> 00:00:50,880
+in the Node architecture.
+
+18
+00:00:50,880 --> 00:00:55,450
+So again, the V8 engine is what converts JavaScript code
+
+19
+00:00:55,450 --> 00:00:59,470
+into machine code that a computer can actually understand.
+
+20
+00:00:59,470 --> 00:01:03,370
+Okay, but that alone is not enough to create a whole
+
+21
+00:01:03,370 --> 00:01:05,380
+server side framework like Node.
+
+22
+00:01:05,380 --> 00:01:09,100
+And so that is why we also have libuv in Node.
+
+23
+00:01:09,100 --> 00:01:12,380
+And libuv is an open source library with a
+
+24
+00:01:12,380 --> 00:01:15,060
+strong focus on asynchronous IO.
+
+25
+00:01:15,060 --> 00:01:16,860
+So, input output.
+
+26
+00:01:16,860 --> 00:01:19,500
+This layer is what gives Node access to the
+
+27
+00:01:19,500 --> 00:01:21,790
+underlying computer operating system,
+
+28
+00:01:21,790 --> 00:01:25,240
+file system, networking, and more.
+
+29
+00:01:25,240 --> 00:01:28,440
+Besides that, libuv also implements two extremely
+
+30
+00:01:28,440 --> 00:01:30,540
+important features of Node.JS
+
+31
+00:01:30,540 --> 00:01:34,010
+which are the event loop and also the thread pool.
+
+32
+00:01:34,010 --> 00:01:37,130
+And in simple terms, the event loop is responsible
+
+33
+00:01:37,130 --> 00:01:40,430
+for handling easy tasks like executing call backs
+
+34
+00:01:40,430 --> 00:01:44,790
+and network IO while the thread pool is for more heavy work
+
+35
+00:01:44,790 --> 00:01:48,200
+like file access or compression or something like that.
+
+36
+00:01:48,200 --> 00:01:50,120
+But you'll learn all about that,
+
+37
+00:01:50,120 --> 00:01:52,430
+so about the event loop and the thread pool,
+
+38
+00:01:52,430 --> 00:01:54,430
+in the next couple of videos.
+
+39
+00:01:54,430 --> 00:01:56,080
+One important thing to note here
+
+40
+00:01:56,080 --> 00:01:59,010
+is that libuv is actually completely written
+
+41
+00:01:59,010 --> 00:02:01,840
+in C++ and not in JavaScript.
+
+42
+00:02:01,840 --> 00:02:06,840
+And V8 itself, also uses C++ code besides JavaScript.
+
+43
+00:02:06,950 --> 00:02:10,150
+So therefore, Node itself is a program written
+
+44
+00:02:10,150 --> 00:02:14,170
+in C++ and JavaScript and not just in JavaScript
+
+45
+00:02:14,170 --> 00:02:16,530
+as you might expect, right?
+
+46
+00:02:16,530 --> 00:02:19,660
+Now the beauty of this is that Node.JS ties all
+
+47
+00:02:19,660 --> 00:02:22,310
+these libraries together, no matter if written
+
+48
+00:02:22,310 --> 00:02:25,640
+in C++ or JavaScript and then gives us
+
+49
+00:02:25,640 --> 00:02:30,380
+developers access to their functions in pure JavaScript.
+
+50
+00:02:30,380 --> 00:02:33,090
+So it really provides us with a very nice layer
+
+51
+00:02:33,090 --> 00:02:37,290
+of abstraction in order to make our lives a lot easier
+
+52
+00:02:37,290 --> 00:02:41,200
+instead of us like having to mess with C++ code.
+
+53
+00:02:41,200 --> 00:02:43,970
+That would be a terrible experience, right?
+
+54
+00:02:43,970 --> 00:02:47,450
+So again, this architecture allows us to write
+
+55
+00:02:47,450 --> 00:02:49,490
+100 percent pure JavaScript code,
+
+56
+00:02:49,490 --> 00:02:52,960
+running in Node.JS and still access functions like
+
+57
+00:02:52,960 --> 00:02:55,490
+for file reading, which behind the scenes are
+
+58
+00:02:55,490 --> 00:02:57,650
+actually implemented in libuv or
+
+59
+00:02:57,650 --> 00:03:01,290
+other libraries in the C++ language.
+
+60
+00:03:01,290 --> 00:03:03,090
+And speaking of other libraries,
+
+61
+00:03:03,090 --> 00:03:06,750
+Node does actually not only rely on V8 and libuv,
+
+62
+00:03:06,750 --> 00:03:10,920
+but also on http-parser for parsing http,
+
+63
+00:03:10,920 --> 00:03:15,920
+c-ares or something like that for some DNS request stuff,
+
+64
+00:03:16,420 --> 00:03:21,420
+OpenSSL for keptography, and also zlib for compression.
+
+65
+00:03:21,490 --> 00:03:24,740
+And these are not that important to understand, alright?
+
+66
+00:03:24,740 --> 00:03:27,830
+So in the end, when we have all these pieces nicely
+
+67
+00:03:27,830 --> 00:03:32,030
+fit together, we end up with Node.JS ready to be used
+
+68
+00:03:32,030 --> 00:03:35,000
+on the server side all four applications.
+
+69
+00:03:35,000 --> 00:03:37,670
+And next up, you will learn more about threads
+
+70
+00:03:37,670 --> 00:03:39,600
+in Node and the thread pool.
+
+71
+00:03:39,600 --> 00:03:41,663
+So stay tuned for that one.
+

@@ -2,9 +2,6 @@
 #include<bits/stdc++.h>
 using namespace std ;
 void prism_brute(vector<pair<int,int>> adj[],int src,int v){
-
-
-
     vector<int> parent(v,-1),key_dist(v,INT_MAX);
     vector<bool> mst(v,false);
     key_dist[src]=0;

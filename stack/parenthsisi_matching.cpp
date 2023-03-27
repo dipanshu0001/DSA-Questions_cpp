@@ -41,13 +41,10 @@ bool isbalance(char *exp,int size){
          else if(exp[i]==')'){
              if(st.top==-1){return false;}
              st.pop();
-
          }
      }
      if(st.top!=-1){return false;}
      return true;
-
-     
 }
 
 int main(){int n;cin>>n;

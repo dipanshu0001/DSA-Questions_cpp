@@ -42,7 +42,8 @@ void merge_sort1(int arr[],int start,int mid,int end){
     }
 }
 void merge(int arr[],int start,int end){
-    if(start<end){
+    if(start<end)
+    {
         int mid=(start+end)/2;
         merge(arr,start,mid);
         merge(arr,mid+1,end);

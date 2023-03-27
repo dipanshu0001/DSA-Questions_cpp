@@ -1,0 +1,1128 @@
+1
+00:00:01,254 --> 00:00:03,100
+In this lecture I want to show you
+
+2
+00:00:03,100 --> 00:00:06,373
+a couple of different things involving modules.
+
+3
+00:00:07,720 --> 00:00:11,220
+And I want to start by basically proving to you
+
+4
+00:00:11,220 --> 00:00:15,300
+that Node does in fact wrap the code in our modules
+
+5
+00:00:15,300 --> 00:00:17,270
+into a wrapper function,
+
+6
+00:00:17,270 --> 00:00:19,420
+like I showed you in the last lecture.
+
+7
+00:00:19,420 --> 00:00:24,043
+So let's create a new file again, module.js,
+
+8
+00:00:25,270 --> 00:00:28,543
+and that's modules, like this.
+
+9
+00:00:29,900 --> 00:00:31,740
+Okay, and what I'm gonna do here
+
+10
+00:00:31,740 --> 00:00:36,703
+is to log to the console the arguments, okay?
+
+11
+00:00:38,480 --> 00:00:42,170
+So arguments is an array in JavaScript,
+
+12
+00:00:42,170 --> 00:00:44,490
+and this array contains all the values
+
+13
+00:00:44,490 --> 00:00:47,100
+that were passed into a function.
+
+14
+00:00:47,100 --> 00:00:50,490
+So when I log this arguments array to the console,
+
+15
+00:00:50,490 --> 00:00:53,110
+if we actually see some values there, well,
+
+16
+00:00:53,110 --> 00:00:57,670
+then it means that we're really in a function, okay?
+
+17
+00:00:57,670 --> 00:01:00,633
+So let's run modules.
+
+18
+00:01:01,530 --> 00:01:06,530
+And indeed, here we have the code in our arguments.
+
+19
+00:01:06,770 --> 00:01:09,050
+And so let's remember the five arguments
+
+20
+00:01:09,050 --> 00:01:10,760
+of the wrapper function.
+
+21
+00:01:10,760 --> 00:01:13,720
+The first one is the export, so this one,
+
+22
+00:01:13,720 --> 00:01:14,790
+which is currently empty
+
+23
+00:01:14,790 --> 00:01:17,030
+because we're not exporting anything.
+
+24
+00:01:17,030 --> 00:01:19,560
+The second one is the require function,
+
+25
+00:01:19,560 --> 00:01:20,670
+so we can see that here,
+
+26
+00:01:20,670 --> 00:01:23,100
+we have the require function indeed.
+
+27
+00:01:23,100 --> 00:01:26,673
+Then the third one is called module, okay.
+
+28
+00:01:28,280 --> 00:01:31,420
+And in module we have then module exports,
+
+29
+00:01:31,420 --> 00:01:34,100
+which again we talked about in the last lecture.
+
+30
+00:01:34,100 --> 00:01:37,250
+And what do we have here is not that important, again,
+
+31
+00:01:37,250 --> 00:01:38,520
+I just wanted to show you
+
+32
+00:01:38,520 --> 00:01:41,570
+that we're actually in a function right now,
+
+33
+00:01:41,570 --> 00:01:43,750
+so that all this code that we have in this module
+
+34
+00:01:43,750 --> 00:01:47,660
+is indeed wrapped into this wrapper function, okay?
+
+35
+00:01:47,660 --> 00:01:50,980
+Then number three and number four are the filename
+
+36
+00:01:50,980 --> 00:01:52,640
+and the directory name.
+
+37
+00:01:52,640 --> 00:01:56,735
+And indeed, this is the name of the module
+
+38
+00:01:56,735 --> 00:01:59,260
+that we're currently in, so modules.js.
+
+39
+00:01:59,260 --> 00:02:02,450
+And then here we have the directory name.
+
+40
+00:02:02,450 --> 00:02:03,550
+So I'm on my desktop,
+
+41
+00:02:03,550 --> 00:02:05,970
+and then in this now Node works folder.
+
+42
+00:02:05,970 --> 00:02:07,740
+So similar to this one here,
+
+43
+00:02:07,740 --> 00:02:11,970
+but then this one has slash the module name, okay?
+
+44
+00:02:11,970 --> 00:02:14,250
+So that proves us that, indeed,
+
+45
+00:02:14,250 --> 00:02:16,800
+all the code inside a module is wrapped,
+
+46
+00:02:16,800 --> 00:02:20,490
+and that we have access to all these variables,
+
+47
+00:02:20,490 --> 00:02:23,030
+so these arguments, okay?
+
+48
+00:02:23,030 --> 00:02:25,640
+So I just find this an interesting experiment
+
+49
+00:02:25,640 --> 00:02:26,960
+that we can do.
+
+50
+00:02:26,960 --> 00:02:29,860
+And we can actually do another cool thing.
+
+51
+00:02:29,860 --> 00:02:32,980
+So to actually show you the wrapper function,
+
+52
+00:02:32,980 --> 00:02:37,980
+we can require the module module, okay.
+
+53
+00:02:38,300 --> 00:02:40,200
+So there's a module called module,
+
+54
+00:02:40,200 --> 00:02:44,410
+which we actually never used but internally Node uses it.
+
+55
+00:02:44,410 --> 00:02:47,190
+And in there we have the wrapper.
+
+56
+00:02:47,190 --> 00:02:49,290
+And so that is actually this property
+
+57
+00:02:49,290 --> 00:02:51,030
+is actually the wrapper function.
+
+58
+00:02:51,030 --> 00:02:52,730
+So we can now take a look at that.
+
+59
+00:02:57,410 --> 00:03:00,140
+And where is that, ah, yeah.
+
+60
+00:03:00,140 --> 00:03:01,720
+So here, here it is actually.
+
+61
+00:03:01,720 --> 00:03:04,410
+So this is the wrapper function.
+
+62
+00:03:04,410 --> 00:03:06,650
+And so indeed you see export, require,
+
+63
+00:03:06,650 --> 00:03:09,800
+module, filename and directory name,
+
+64
+00:03:09,800 --> 00:03:11,160
+and then the function body.
+
+65
+00:03:11,160 --> 00:03:13,520
+And so this is what Node internally use,
+
+66
+00:03:13,520 --> 00:03:16,220
+so basically this template here, it uses it,
+
+67
+00:03:16,220 --> 00:03:20,060
+and then fills up the body of this function with our code.
+
+68
+00:03:20,060 --> 00:03:23,260
+Okay, so again, just an interesting experiment here.
+
+69
+00:03:23,260 --> 00:03:25,260
+Now the most important thing that I wanna show you here
+
+70
+00:03:25,260 --> 00:03:27,960
+is how we can export and import data
+
+71
+00:03:27,960 --> 00:03:30,370
+from one module into the other.
+
+72
+00:03:30,370 --> 00:03:33,130
+And so let's start by creating a new module here,
+
+73
+00:03:33,130 --> 00:03:35,280
+in which I'm gonna create a calculator,
+
+74
+00:03:35,280 --> 00:03:38,040
+a bit like I mentioned in the last video.
+
+75
+00:03:38,040 --> 00:03:42,180
+So let's just call this test-module-1,
+
+76
+00:03:42,180 --> 00:03:44,393
+because we're gonna have a couple of them.
+
+77
+00:03:45,300 --> 00:03:47,763
+And here I'm gonna create a calculator class.
+
+78
+00:03:49,810 --> 00:03:52,890
+So again, this is the ES6 syntax
+
+79
+00:03:52,890 --> 00:03:56,053
+of writing classes in JavaScript.
+
+80
+00:03:57,260 --> 00:04:01,033
+So let's add a couple of methods here, so add a and b,
+
+81
+00:04:04,760 --> 00:04:08,100
+will of course return a plus b,
+
+82
+00:04:08,100 --> 00:04:12,920
+so very simple stuff, multiply a, b,
+
+83
+00:04:14,020 --> 00:04:17,317
+will return a times b, and then just,
+
+84
+00:04:21,785 --> 00:04:22,950
+let's just do divide as well,
+
+85
+00:04:22,950 --> 00:04:26,580
+just for the sake of completeness here, a, b, like this.
+
+86
+00:04:29,470 --> 00:04:32,170
+Give it a save, it nicely formats it,
+
+87
+00:04:32,170 --> 00:04:36,420
+and now we can do module.exports,
+
+88
+00:04:36,420 --> 00:04:38,370
+just like we learned in the last video,
+
+89
+00:04:39,970 --> 00:04:42,690
+and we're exporting our calculator, okay?
+
+90
+00:04:42,690 --> 00:04:45,000
+So again, we use module.exports
+
+91
+00:04:45,000 --> 00:04:48,010
+when we want to export one single value.
+
+92
+00:04:48,010 --> 00:04:49,830
+And in this case our single value here
+
+93
+00:04:49,830 --> 00:04:51,660
+is the calculator class.
+
+94
+00:04:51,660 --> 00:04:55,180
+So module.exports is exactly what is returned
+
+95
+00:04:55,180 --> 00:04:58,340
+from one module, so whatever we put there, well,
+
+96
+00:04:58,340 --> 00:05:01,320
+then gets exported automatically, right?
+
+97
+00:05:01,320 --> 00:05:03,460
+We can then save the exported value
+
+98
+00:05:03,460 --> 00:05:07,023
+to a variable when importing it, so let's do that now.
+
+99
+00:05:08,540 --> 00:05:12,070
+And now here we can actually give it any name that we want.
+
+100
+00:05:12,070 --> 00:05:15,390
+So the name that we are exporting on the other side,
+
+101
+00:05:15,390 --> 00:05:17,380
+so in this other module, doesn't matter.
+
+102
+00:05:17,380 --> 00:05:19,363
+We can call it anything we want here.
+
+103
+00:05:20,810 --> 00:05:24,150
+So in that sense it's just like a normal function return,
+
+104
+00:05:24,150 --> 00:05:26,400
+right, so we can always return any variable,
+
+105
+00:05:26,400 --> 00:05:28,320
+but then call it something else
+
+106
+00:05:28,320 --> 00:05:31,590
+when we basically save the result of a function
+
+107
+00:05:31,590 --> 00:05:33,023
+to a variable, right?
+
+108
+00:05:34,580 --> 00:05:36,780
+So since it's our own module,
+
+109
+00:05:36,780 --> 00:05:41,780
+we have to use the dot slash, so what I did just here,
+
+110
+00:05:42,010 --> 00:05:44,600
+and then test-module-1.
+
+111
+00:05:44,600 --> 00:05:47,830
+And the JS, remember, we can just drop that,
+
+112
+00:05:47,830 --> 00:05:49,990
+it's not necessary, okay?
+
+113
+00:05:49,990 --> 00:05:53,560
+And so this C variable here, which is uppercase
+
+114
+00:05:53,560 --> 00:05:57,330
+because for class we usually always use uppercase names.
+
+115
+00:05:57,330 --> 00:06:01,000
+And remember, we are actually exporting a class here.
+
+116
+00:06:01,000 --> 00:06:04,783
+Okay, so we can now use that class to do some calculations.
+
+117
+00:06:06,230 --> 00:06:08,853
+So first of all let's create a new calculator,
+
+118
+00:06:10,200 --> 00:06:12,650
+calculator one, because later on
+
+119
+00:06:12,650 --> 00:06:15,090
+we're gonna have another one, okay?
+
+120
+00:06:15,090 --> 00:06:18,650
+And so now we create a new instance
+
+121
+00:06:18,650 --> 00:06:20,500
+of a calculator like this,
+
+122
+00:06:20,500 --> 00:06:23,290
+and this should be nothing new for you at this point.
+
+123
+00:06:23,290 --> 00:06:25,900
+And then let's log through console
+
+124
+00:06:25,900 --> 00:06:27,793
+the result of actually using this.
+
+125
+00:06:28,850 --> 00:06:33,850
+So calc1.add, and let's say two and five.
+
+126
+00:06:37,210 --> 00:06:40,443
+Give it a save, and actually let's comment out these two.
+
+127
+00:06:42,550 --> 00:06:45,920
+Save it again, and then Node modules,
+
+128
+00:06:45,920 --> 00:06:47,940
+and here we have the result, seven.
+
+129
+00:06:47,940 --> 00:06:51,900
+So that's two plus five, so it works, right?
+
+130
+00:06:51,900 --> 00:06:54,290
+And here in our test module,
+
+131
+00:06:54,290 --> 00:06:57,970
+we could actually do it in a more elegant way.
+
+132
+00:06:57,970 --> 00:07:00,300
+So we could assign this class here directly
+
+133
+00:07:00,300 --> 00:07:03,190
+to module.exports, right?
+
+134
+00:07:03,190 --> 00:07:06,270
+So right now we have a class declaration,
+
+135
+00:07:06,270 --> 00:07:08,570
+so that's a little bit like a function declaration,
+
+136
+00:07:08,570 --> 00:07:12,200
+where we say function calculator, and then this,
+
+137
+00:07:12,200 --> 00:07:14,870
+and here we say class, okay?
+
+138
+00:07:14,870 --> 00:07:18,520
+But we could do it with a class expression as well.
+
+139
+00:07:18,520 --> 00:07:22,050
+And so like this we simply don't use
+
+140
+00:07:22,050 --> 00:07:23,660
+the calculator name anyway.
+
+141
+00:07:23,660 --> 00:07:25,023
+So copy it, comment it out.
+
+142
+00:07:28,450 --> 00:07:30,760
+Okay, so just like this.
+
+143
+00:07:30,760 --> 00:07:32,650
+So we just say that this is a class,
+
+144
+00:07:32,650 --> 00:07:34,970
+and then assign it to a variable.
+
+145
+00:07:34,970 --> 00:07:36,593
+And so that's now an expression.
+
+146
+00:07:37,600 --> 00:07:39,470
+So let's run this again,
+
+147
+00:07:39,470 --> 00:07:43,120
+and we see of course our seven again, okay?
+
+148
+00:07:43,120 --> 00:07:47,471
+So again, this is just to actually immediately assign
+
+149
+00:07:47,471 --> 00:07:50,520
+the value that we want to module.exports,
+
+150
+00:07:50,520 --> 00:07:53,280
+and that's gonna save us then some lines of code,
+
+151
+00:07:53,280 --> 00:07:56,473
+and probably make our code look a bit better.
+
+152
+00:07:57,390 --> 00:08:01,590
+Okay, so that's how we export stuff with module.exports,
+
+153
+00:08:01,590 --> 00:08:05,160
+and now let's see how and when we can use
+
+154
+00:08:05,160 --> 00:08:07,820
+the exports shorthand that I also mentioned
+
+155
+00:08:07,820 --> 00:08:08,973
+in the previous video.
+
+156
+00:08:10,970 --> 00:08:14,433
+So let's just create a simple comment here, module.exports.
+
+157
+00:08:16,930 --> 00:08:19,300
+Then here just exports.
+
+158
+00:08:19,300 --> 00:08:24,300
+So a new module test, and again, module-2.js.
+
+159
+00:08:27,930 --> 00:08:31,790
+And so the alternative for doing module.exports
+
+160
+00:08:31,790 --> 00:08:36,120
+is to add properties to the exports object itself.
+
+161
+00:08:36,120 --> 00:08:37,680
+So we could do it like this,
+
+162
+00:08:37,680 --> 00:08:40,740
+and using again the calculator example from before,
+
+163
+00:08:40,740 --> 00:08:42,410
+we could do it like this.
+
+164
+00:08:42,410 --> 00:08:46,253
+So we can simply add properties to the exports object.
+
+165
+00:08:48,640 --> 00:08:53,640
+So a and b will return a plus b,
+
+166
+00:08:54,490 --> 00:08:59,490
+exports.multiply a, b will return a times b,
+
+167
+00:09:06,880 --> 00:09:08,280
+and now let's just duplicate
+
+168
+00:09:10,730 --> 00:09:15,690
+just for the sake of completeness again, and okay.
+
+169
+00:09:15,690 --> 00:09:18,600
+So we created basically three anonymous functions here,
+
+170
+00:09:18,600 --> 00:09:20,720
+these three, and assigned them
+
+171
+00:09:20,720 --> 00:09:24,190
+to three properties of exports.
+
+172
+00:09:24,190 --> 00:09:27,750
+And so now when we export this module on the other side,
+
+173
+00:09:27,750 --> 00:09:31,400
+so in modules.js, we will get basically access
+
+174
+00:09:31,400 --> 00:09:34,230
+to this exports object.
+
+175
+00:09:34,230 --> 00:09:36,290
+So let me show that to you.
+
+176
+00:09:36,290 --> 00:09:38,820
+So let's say const calc2 is require.
+
+177
+00:09:43,490 --> 00:09:46,640
+Again, don't forget the dot and slash,
+
+178
+00:09:46,640 --> 00:09:48,683
+because it is our own module.
+
+179
+00:09:50,400 --> 00:09:55,400
+Okay, and so now this calc2 here is the exports object.
+
+180
+00:09:55,940 --> 00:09:58,800
+Okay, so let me show that to you.
+
+181
+00:09:58,800 --> 00:10:03,207
+Console.log, calc2.add, two and five.
+
+182
+00:10:06,670 --> 00:10:09,823
+So that should give us the exact same result as before.
+
+183
+00:10:11,870 --> 00:10:15,313
+And indeed, here is our seven, just like before.
+
+184
+00:10:16,997 --> 00:10:18,147
+And if we did multiply,
+
+185
+00:10:20,240 --> 00:10:24,000
+well then that should be of course 10.
+
+186
+00:10:24,000 --> 00:10:26,820
+And so yeah, we have seven here from the addition here,
+
+187
+00:10:26,820 --> 00:10:28,793
+and then this multiply gives us 10.
+
+188
+00:10:29,660 --> 00:10:31,460
+So I hope that this really makes a difference
+
+189
+00:10:31,460 --> 00:10:34,370
+between module.exports and exports clear.
+
+190
+00:10:34,370 --> 00:10:37,150
+And so again, when we're using simply exports,
+
+191
+00:10:37,150 --> 00:10:41,360
+we can add stuff to this object, so basically properties,
+
+192
+00:10:41,360 --> 00:10:43,470
+and then when we import that,
+
+193
+00:10:43,470 --> 00:10:45,900
+so when we require this module,
+
+194
+00:10:45,900 --> 00:10:47,340
+the result that we're gonna get
+
+195
+00:10:47,340 --> 00:10:50,400
+is an object containing all these properties.
+
+196
+00:10:50,400 --> 00:10:52,180
+And since we're getting an object,
+
+197
+00:10:52,180 --> 00:10:55,260
+we can use the power of ES6 destructuring
+
+198
+00:10:55,260 --> 00:10:58,023
+to do some cool magic here, basically.
+
+199
+00:10:59,000 --> 00:11:02,843
+So let me get rid of this one, or actually duplicate it,
+
+200
+00:11:03,710 --> 00:11:07,690
+comment out this one, and so we can use destructuring
+
+201
+00:11:07,690 --> 00:11:12,130
+to destructure the object that we get, okay?
+
+202
+00:11:12,130 --> 00:11:16,140
+And it works like this, so we use the curly braces,
+
+203
+00:11:16,140 --> 00:11:18,200
+and then we simply create variable names
+
+204
+00:11:18,200 --> 00:11:21,460
+for the properties in that object.
+
+205
+00:11:21,460 --> 00:11:26,460
+So again, let's use add, multiply and divide.
+
+206
+00:11:26,860 --> 00:11:30,380
+So that are the names that we actually have
+
+207
+00:11:30,380 --> 00:11:32,450
+on this exports object.
+
+208
+00:11:32,450 --> 00:11:34,680
+So add, multiply and divide,
+
+209
+00:11:34,680 --> 00:11:37,080
+and these actually have to be the exact same name
+
+210
+00:11:37,080 --> 00:11:39,330
+as in the original object, okay?
+
+211
+00:11:39,330 --> 00:11:41,100
+Now the thing that this will do
+
+212
+00:11:41,100 --> 00:11:43,960
+is that basically it will create a variable
+
+213
+00:11:43,960 --> 00:11:45,523
+called simply multiply.
+
+214
+00:11:47,820 --> 00:11:50,400
+And so indeed, here is our result.
+
+215
+00:11:50,400 --> 00:11:53,980
+And we can actually only import the ones that we want.
+
+216
+00:11:53,980 --> 00:11:57,470
+So let's say we only want add and multiply, okay?
+
+217
+00:11:57,470 --> 00:12:00,290
+And so we will only get access to these two,
+
+218
+00:12:00,290 --> 00:12:03,340
+instead of importing everything from the module.
+
+219
+00:12:03,340 --> 00:12:05,160
+And this is quite a common pattern
+
+220
+00:12:05,160 --> 00:12:07,240
+that you will see used in Node,
+
+221
+00:12:07,240 --> 00:12:09,930
+and we will do that throughout the project as well.
+
+222
+00:12:09,930 --> 00:12:11,630
+Okay, so in this video we talked
+
+223
+00:12:11,630 --> 00:12:14,030
+about the wrapper function here,
+
+224
+00:12:14,030 --> 00:12:16,280
+then we talked about exporting and importing
+
+225
+00:12:16,280 --> 00:12:20,110
+using module.exports and the exports shorthand.
+
+226
+00:12:20,110 --> 00:12:21,810
+And now finally, just to finish,
+
+227
+00:12:21,810 --> 00:12:24,523
+let's talk about caching very quickly.
+
+228
+00:12:27,060 --> 00:12:30,143
+Okay, so let's create test-module-3 here.
+
+229
+00:12:35,860 --> 00:12:39,603
+And what I'm gonna do here is to create a console.log,
+
+230
+00:12:41,070 --> 00:12:44,193
+so basically some top-level code inside this module.
+
+231
+00:12:46,710 --> 00:12:49,793
+Hello from the module, okay,
+
+232
+00:12:50,892 --> 00:12:53,973
+and then I also want to export a function.
+
+233
+00:12:54,830 --> 00:12:58,770
+Just one single function, and so I'm saying module.exports
+
+234
+00:13:00,920 --> 00:13:05,920
+equals function without any arguments,
+
+235
+00:13:06,300 --> 00:13:08,300
+one that will simply log to the console:
+
+236
+00:13:10,110 --> 00:13:13,673
+log this beautiful text.
+
+237
+00:13:14,920 --> 00:13:17,883
+Just some small emoji here to make it pop a little bit.
+
+238
+00:13:20,210 --> 00:13:25,133
+Okay, so let's now require this test module.
+
+239
+00:13:28,170 --> 00:13:32,070
+Test-module-3, and I'm not saving it to any variable.
+
+240
+00:13:32,070 --> 00:13:34,750
+Instead I'm going to call the function right away
+
+241
+00:13:34,750 --> 00:13:37,250
+without saving it to a variable.
+
+242
+00:13:37,250 --> 00:13:38,860
+So we could of course do that,
+
+243
+00:13:38,860 --> 00:13:41,530
+then we would have the function in a variable,
+
+244
+00:13:41,530 --> 00:13:43,070
+and we could then call it.
+
+245
+00:13:43,070 --> 00:13:45,070
+But this is the exact same thing,
+
+246
+00:13:45,070 --> 00:13:48,530
+because this will return this function that we defined,
+
+247
+00:13:48,530 --> 00:13:50,630
+so this one here, right?
+
+248
+00:13:50,630 --> 00:13:53,610
+It will return this because we are using module.exports,
+
+249
+00:13:53,610 --> 00:13:57,727
+and then right away we call this function here, okay?
+
+250
+00:13:57,727 --> 00:14:00,890
+And so actually let's do that three time.
+
+251
+00:14:00,890 --> 00:14:04,980
+And keeping in mind that we have caching in Node.js modules,
+
+252
+00:14:04,980 --> 00:14:08,053
+what do you think will happen when we run this code?
+
+253
+00:14:09,580 --> 00:14:13,933
+Okay, so let's run this and see what's gonna happen.
+
+254
+00:14:16,770 --> 00:14:19,460
+Here we have the result, hello from the module,
+
+255
+00:14:19,460 --> 00:14:22,980
+and then three times log this beautiful text.
+
+256
+00:14:22,980 --> 00:14:26,520
+So we have this logging here three times, well,
+
+257
+00:14:26,520 --> 00:14:29,350
+because we called the same function three times.
+
+258
+00:14:29,350 --> 00:14:33,320
+But we have hello from the module only once, okay?
+
+259
+00:14:33,320 --> 00:14:35,450
+And that is because of caching.
+
+260
+00:14:35,450 --> 00:14:38,800
+So technically this module was only loaded once,
+
+261
+00:14:38,800 --> 00:14:42,850
+and so the code inside of it was also executed once only.
+
+262
+00:14:42,850 --> 00:14:46,270
+And so that's why this line of code here,
+
+263
+00:14:46,270 --> 00:14:50,370
+this logging was only run once, okay?
+
+264
+00:14:50,370 --> 00:14:53,320
+And so these other two loggings here, well,
+
+265
+00:14:53,320 --> 00:14:56,470
+they came from cache, so they were stored somewhere
+
+266
+00:14:56,470 --> 00:14:58,610
+in the Node's processes cache.
+
+267
+00:14:58,610 --> 00:15:01,540
+And once we called the function here for the second time,
+
+268
+00:15:01,540 --> 00:15:03,390
+it was simply retrieved from there,
+
+269
+00:15:03,390 --> 00:15:06,520
+instead of loading the module again, okay?
+
+270
+00:15:06,520 --> 00:15:10,510
+So I'm sure that makes a lot of sense to you.
+
+271
+00:15:10,510 --> 00:15:13,450
+And so that was our lecture, actually.
+
+272
+00:15:13,450 --> 00:15:16,090
+If you have any questions, you can of course, as always,
+
+273
+00:15:16,090 --> 00:15:20,070
+post them to the Q&amp;A and you will get help there.
+
+274
+00:15:20,070 --> 00:15:23,030
+So that finishes this entire section.
+
+275
+00:15:23,030 --> 00:15:27,750
+I know it was quite of a ride until we got to this point,
+
+276
+00:15:27,750 --> 00:15:30,700
+so a lot of stuff to take in.
+
+277
+00:15:30,700 --> 00:15:33,140
+And if you did correct everything 100%,
+
+278
+00:15:33,140 --> 00:15:35,240
+don't worry all too much about it,
+
+279
+00:15:35,240 --> 00:15:36,800
+because throughout the course,
+
+280
+00:15:36,800 --> 00:15:41,170
+most of the stuff will become clear eventually, okay?
+
+281
+00:15:41,170 --> 00:15:43,940
+So don't worry, just keep moving on in the course,
+
+282
+00:15:43,940 --> 00:15:45,790
+and I'll see you in the next section.
+

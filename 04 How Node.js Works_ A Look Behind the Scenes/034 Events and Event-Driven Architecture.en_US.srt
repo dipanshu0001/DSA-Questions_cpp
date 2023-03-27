@@ -1,0 +1,340 @@
+1
+00:00:01,120 --> 00:00:03,120
+In this video and the next one
+
+2
+00:00:03,120 --> 00:00:06,030
+we're gonna dive into yet another important piece
+
+3
+00:00:06,030 --> 00:00:08,870
+of the Node JS architecture with JS events
+
+4
+00:00:08,870 --> 00:00:11,093
+and event-driven architecture.
+
+5
+00:00:12,370 --> 00:00:15,210
+So most of Node's core modules, like the ones
+
+6
+00:00:15,210 --> 00:00:19,780
+we already used, like HTTP, File System, and Timers
+
+7
+00:00:19,780 --> 00:00:23,200
+are built around an event-driven architecture,
+
+8
+00:00:23,200 --> 00:00:25,830
+and we can of course also use this architecture
+
+9
+00:00:25,830 --> 00:00:28,720
+to our advantage in our own code.
+
+10
+00:00:28,720 --> 00:00:31,910
+And the concept is actually quite simple.
+
+11
+00:00:31,910 --> 00:00:34,780
+So, in Node, there are certain objects called
+
+12
+00:00:34,780 --> 00:00:37,843
+event emitters that emit named events
+
+13
+00:00:37,843 --> 00:00:41,520
+as soon as something important happens in the app,
+
+14
+00:00:41,520 --> 00:00:45,360
+like a request hitting server, or a timer expiring,
+
+15
+00:00:45,360 --> 00:00:47,660
+or a file finishing to read.
+
+16
+00:00:47,660 --> 00:00:51,030
+These events can then be picked up by event listeners
+
+17
+00:00:51,030 --> 00:00:54,380
+that we developers set up, which will fire off
+
+18
+00:00:54,380 --> 00:00:58,870
+callback functions that are attached to each listener, okay.
+
+19
+00:00:58,870 --> 00:01:02,150
+So again, on one hand, we have event emitters,
+
+20
+00:01:02,150 --> 00:01:05,470
+and on the other hand event listeners that will react
+
+21
+00:01:05,470 --> 00:01:08,940
+to emitted events by calling callback function.
+
+22
+00:01:08,940 --> 00:01:10,540
+Simple, right?
+
+23
+00:01:10,540 --> 00:01:12,900
+And probably the best way to understand this
+
+24
+00:01:12,900 --> 00:01:14,630
+is to look at an example.
+
+25
+00:01:14,630 --> 00:01:17,760
+And so let's briefly understand how Node use
+
+26
+00:01:17,760 --> 00:01:21,330
+the event-driven architecture to handle server requests
+
+27
+00:01:21,330 --> 00:01:25,950
+in the HTTP module that we already used in another section.
+
+28
+00:01:25,950 --> 00:01:28,600
+So when we want to create a server,
+
+29
+00:01:28,600 --> 00:01:30,384
+we use the Create Server method
+
+30
+00:01:30,384 --> 00:01:33,900
+and save it to a Server Variable.
+
+31
+00:01:33,900 --> 00:01:36,260
+This implementation here is a bit different
+
+32
+00:01:36,260 --> 00:01:40,270
+from what we did before, but it works the exact same way.
+
+33
+00:01:40,270 --> 00:01:44,040
+Anyway, this server.on method is how we actually
+
+34
+00:01:44,040 --> 00:01:49,040
+create a listener, and in this case for the "request" event.
+
+35
+00:01:49,070 --> 00:01:51,390
+So let's say we have our server running,
+
+36
+00:01:51,390 --> 00:01:53,770
+and a new request is made.
+
+37
+00:01:53,770 --> 00:01:57,410
+The server acts as an emitter, and will automatically
+
+38
+00:01:57,410 --> 00:02:01,220
+emit an event called "request" each time that a request
+
+39
+00:02:01,220 --> 00:02:02,810
+hits the server.
+
+40
+00:02:02,810 --> 00:02:04,350
+Simple, right?
+
+41
+00:02:04,350 --> 00:02:07,100
+Then, since we already have a listener set up
+
+42
+00:02:07,100 --> 00:02:10,830
+for this exact event, the callback function that we attached
+
+43
+00:02:10,830 --> 00:02:14,000
+to this listener will automatically be called.
+
+44
+00:02:14,000 --> 00:02:16,780
+And this kind of function we already know from before,
+
+45
+00:02:16,780 --> 00:02:20,040
+it will simply send some data back to the client.
+
+46
+00:02:20,040 --> 00:02:22,970
+Now, it works this way because behind the scenes
+
+47
+00:02:22,970 --> 00:02:26,074
+the server is actually an instance of the Node JS
+
+48
+00:02:26,074 --> 00:02:28,980
+EventEmitter class, so it inherits all this
+
+49
+00:02:28,980 --> 00:02:32,500
+event emitting and listening logic from that EventEmitter
+
+50
+00:02:32,500 --> 00:02:35,410
+class, and don't worry, we're going to use it all
+
+51
+00:02:35,410 --> 00:02:38,410
+right in the next video, so that you become familiar
+
+52
+00:02:38,410 --> 00:02:41,210
+with all these logic.
+
+53
+00:02:41,210 --> 00:02:43,340
+Now, just to finish this lecture, I believe it's
+
+54
+00:02:43,340 --> 00:02:46,800
+important to mention that this EventEmitter logic
+
+55
+00:02:46,800 --> 00:02:49,960
+is called the Observer Pattern in Javascript programming
+
+56
+00:02:49,960 --> 00:02:53,160
+in general, and it's quite a popular pattern with
+
+57
+00:02:53,160 --> 00:02:54,740
+many used cases.
+
+58
+00:02:54,740 --> 00:02:57,090
+So the idea is I set there an observer,
+
+59
+00:02:57,090 --> 00:03:00,370
+in this case the event listener, which keeps waiting,
+
+60
+00:03:00,370 --> 00:03:03,450
+keeps observing the subject that will eventually
+
+61
+00:03:03,450 --> 00:03:06,486
+emit the event that the listener is waiting for.
+
+62
+00:03:06,486 --> 00:03:09,680
+And the opposite of this pattern is simply functions
+
+63
+00:03:09,680 --> 00:03:12,370
+calling other functions, which is something that
+
+64
+00:03:12,370 --> 00:03:14,530
+we're more used to actually, right?
+
+65
+00:03:14,530 --> 00:03:16,490
+But the observer pattern has been designed
+
+66
+00:03:16,490 --> 00:03:19,020
+to react rather than to call.
+
+67
+00:03:19,020 --> 00:03:22,330
+And that is because there is a huge benefit of using
+
+68
+00:03:22,330 --> 00:03:25,248
+this architecture, which is the fact that everything
+
+69
+00:03:25,248 --> 00:03:27,420
+is more de-coupled.
+
+70
+00:03:27,420 --> 00:03:30,340
+We don't have, for example, functions from the File System
+
+71
+00:03:30,340 --> 00:03:33,610
+module calling functions from the HTTP module
+
+72
+00:03:33,610 --> 00:03:35,770
+because it would be a huge mess.
+
+73
+00:03:35,770 --> 00:03:38,690
+Instead, these modules are nicely de-coupled
+
+74
+00:03:38,690 --> 00:03:41,470
+and self-contained, each emitting events that
+
+75
+00:03:41,470 --> 00:03:44,380
+other functions, even if they come from other modules
+
+76
+00:03:44,380 --> 00:03:46,120
+can respond to.
+
+77
+00:03:46,120 --> 00:03:49,170
+Also, using an event-driven architecture makes it
+
+78
+00:03:49,170 --> 00:03:52,390
+way more straight forward to react multiple times
+
+79
+00:03:52,390 --> 00:03:53,760
+to the same event.
+
+80
+00:03:53,760 --> 00:03:58,210
+All we have to do is to set up multiple listeners, right?
+
+81
+00:03:58,210 --> 00:04:01,760
+Okay and that is Node's event-driven architecture
+
+82
+00:04:01,760 --> 00:04:03,020
+in a nutshell.
+
+83
+00:04:03,020 --> 00:04:06,050
+And don't worry if this seems a bit too theoretical,
+
+84
+00:04:06,050 --> 00:04:08,730
+you will see this logic being used in many situations
+
+85
+00:04:08,730 --> 00:04:12,183
+throughout the course, starting right in the next video.
+

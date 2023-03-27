@@ -91,7 +91,8 @@ char* infixtopos2(char* infix){
                 i++;
             }
             else{
-                postfix[j++]=st.pop();            }
+                postfix[j++]=st.pop();    
+                        }
         }
     }
     while(!st.isempty()){postfix[j++]=st.pop();}return postfix;
@@ -104,3 +105,4 @@ cout<<infixtopos2(infix);
 
     return 0;
 }
+// vector<vector<int>> result(5,vector<int>(10,0));

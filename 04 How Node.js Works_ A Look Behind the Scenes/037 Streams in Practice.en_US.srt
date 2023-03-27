@@ -1,0 +1,992 @@
+1
+00:00:01,270 --> 00:00:04,633
+All right, now lets actually work with streams.
+
+2
+00:00:06,140 --> 00:00:09,363
+And again, starting by creating a new file.
+
+3
+00:00:13,160 --> 00:00:16,370
+All right. Now lets say that for some reason in
+
+4
+00:00:16,370 --> 00:00:20,440
+our application, we need to read a large text file from
+
+5
+00:00:20,440 --> 00:00:23,800
+the file system, and then send it to the client.
+
+6
+00:00:23,800 --> 00:00:25,640
+So how would we do that?
+
+7
+00:00:25,640 --> 00:00:28,650
+Well there are multiple ways and we're going to explore
+
+8
+00:00:28,650 --> 00:00:31,630
+a few of them starting with the most basic one
+
+9
+00:00:31,630 --> 00:00:35,320
+and moving all the way to the best way of doing this.
+
+10
+00:00:35,320 --> 00:00:39,090
+Okay, so the first thing is to require the file system
+
+11
+00:00:39,090 --> 00:00:43,220
+package just like before, and also the HTTP module.
+
+12
+00:00:46,810 --> 00:00:49,600
+Let me now show you a nice trick,
+
+13
+00:00:49,600 --> 00:00:52,183
+so lets actually create a server like this.
+
+14
+00:00:53,770 --> 00:00:58,770
+So, require the HTTP package, and then from here we can
+
+15
+00:00:59,530 --> 00:01:04,530
+right away call createServer. So just like this.
+
+16
+00:01:05,550 --> 00:01:09,720
+Okay, so the result of requiring HTTP, is the
+
+17
+00:01:09,720 --> 00:01:13,700
+HTTP object and on there we can then use createServer.
+
+18
+00:01:13,700 --> 00:01:16,690
+Just like this, and then save it into a variable.
+
+19
+00:01:16,690 --> 00:01:19,620
+So that is yet another way of creating a new server
+
+20
+00:01:19,620 --> 00:01:21,943
+with writing even a bit less code.
+
+21
+00:01:24,530 --> 00:01:29,530
+Okay and so just like before lets now list to the request
+
+22
+00:01:29,970 --> 00:01:34,970
+event, and specify our callback here.
+
+23
+00:01:38,550 --> 00:01:41,190
+So, the first solution that we're going to use is the
+
+24
+00:01:41,190 --> 00:01:43,600
+easiest and most straight-forward one.
+
+25
+00:01:43,600 --> 00:01:46,690
+Which is to simply read the file into a variable,
+
+26
+00:01:46,690 --> 00:01:49,350
+and then once that's done, send it to the client
+
+27
+00:01:49,350 --> 00:01:52,020
+in the way that we already know how to do it.
+
+28
+00:01:52,020 --> 00:01:54,660
+So that one's very simple, and let me write a comment
+
+29
+00:01:54,660 --> 00:01:58,410
+here for that. So solution one, and so
+
+30
+00:01:58,410 --> 00:02:03,410
+fs.readFile then our test file again.
+
+31
+00:02:09,100 --> 00:02:12,720
+And then once that's ready, we call our callback function
+
+32
+00:02:12,720 --> 00:02:15,270
+in which we have access to the data.
+
+33
+00:02:15,270 --> 00:02:17,703
+But first lets handle the error.
+
+34
+00:02:20,930 --> 00:02:24,880
+So for example in case that the file does not exist,
+
+35
+00:02:24,880 --> 00:02:28,250
+and in that case we simply log the error to the console.
+
+36
+00:02:28,250 --> 00:02:32,340
+But otherwise, we simply send this data back to the client.
+
+37
+00:02:32,340 --> 00:02:35,280
+So we use the response object just like we did before
+
+38
+00:02:35,280 --> 00:02:40,280
+many times, and then .end and the data.
+
+39
+00:02:40,610 --> 00:02:44,010
+So, give it a save, and so that is the first
+
+40
+00:02:44,010 --> 00:02:46,363
+and the simplest solution, right?
+
+41
+00:02:47,450 --> 00:02:50,460
+But before we can test this, we need to actually also
+
+42
+00:02:51,470 --> 00:02:55,433
+start a sever, right? So we use listen to do that.
+
+43
+00:02:56,770 --> 00:03:01,603
+And the port, the same one as before, then localhost
+
+44
+00:03:03,440 --> 00:03:05,253
+and our callback function.
+
+45
+00:03:12,960 --> 00:03:15,353
+Okay, so lets see if this actually works.
+
+46
+00:03:24,080 --> 00:03:27,880
+And of course not, because I actually didn't even start
+
+47
+00:03:27,880 --> 00:03:29,023
+the application.
+
+48
+00:03:31,260 --> 00:03:33,810
+So now it says listening, and now lets see
+
+49
+00:03:33,810 --> 00:03:34,853
+what happens here.
+
+50
+00:03:35,730 --> 00:03:39,565
+And here we go. So this file is huge, it has
+
+51
+00:03:39,565 --> 00:03:42,960
+Node.js is the best written in it like 10000 times
+
+52
+00:03:42,960 --> 00:03:46,080
+or something, and so it takes a lot of time
+
+53
+00:03:46,080 --> 00:03:49,760
+until it loads entirely. And we're not really interested in
+
+54
+00:03:49,760 --> 00:03:53,010
+loading everything, so lets stop this here,
+
+55
+00:03:53,010 --> 00:03:56,430
+and go back to our code. So this works just fine, the
+
+56
+00:03:56,430 --> 00:03:59,480
+solution one that we have here in this case,
+
+57
+00:03:59,480 --> 00:04:01,970
+but the problem is that with this solution,
+
+58
+00:04:01,970 --> 00:04:04,660
+node will actually have to load the entire file
+
+59
+00:04:04,660 --> 00:04:07,610
+into memory, because only after that's ready,
+
+60
+00:04:07,610 --> 00:04:10,890
+it can then send that data. Now this is a problem
+
+61
+00:04:10,890 --> 00:04:14,120
+when the file is big, and also when there are a ton
+
+62
+00:04:14,120 --> 00:04:17,240
+of requests hitting your server. Because the node process
+
+63
+00:04:17,240 --> 00:04:21,464
+will very quickly run out of resources and your app will
+
+64
+00:04:21,464 --> 00:04:25,740
+quit working, everything will crash, and your users
+
+65
+00:04:25,740 --> 00:04:28,940
+will not be happy believe me. So this solution here
+
+66
+00:04:28,940 --> 00:04:31,500
+does work when we're just creating something small
+
+67
+00:04:31,500 --> 00:04:33,990
+locally for just ourselves, for example.
+
+68
+00:04:33,990 --> 00:04:37,030
+But in a production-ready application, you cannot use
+
+69
+00:04:37,030 --> 00:04:41,270
+a piece of code like this. Okay? So lets move on to
+
+70
+00:04:41,270 --> 00:04:44,070
+our second solution. And in that solution,
+
+71
+00:04:44,070 --> 00:04:46,933
+we will actually use streams.
+
+72
+00:04:48,760 --> 00:04:52,420
+Okay, so lets comment out this part,
+
+73
+00:04:52,420 --> 00:04:55,890
+and move on to solution number two.
+
+74
+00:04:55,890 --> 00:04:58,270
+And the idea here is that we actually don't really
+
+75
+00:04:58,270 --> 00:05:03,000
+need to read this data from the file into a variable, right?
+
+76
+00:05:03,000 --> 00:05:05,860
+We don't need this variable. So instead of reading
+
+77
+00:05:05,860 --> 00:05:09,310
+the data into a variable, and having to store that variable
+
+78
+00:05:09,310 --> 00:05:12,710
+into memory, we will just create a readable stream.
+
+79
+00:05:12,710 --> 00:05:15,490
+Then as we receive each chunk of data,
+
+80
+00:05:15,490 --> 00:05:17,920
+we send it to the client as a response
+
+81
+00:05:17,920 --> 00:05:20,440
+which is a writable stream remember.
+
+82
+00:05:20,440 --> 00:05:22,963
+So let me now show you how we can use streams.
+
+83
+00:05:24,570 --> 00:05:28,823
+So we create a variable, lets call it readable here,
+
+84
+00:05:30,025 --> 00:05:33,437
+and then from the file system again, we use createReadStream
+
+85
+00:05:39,450 --> 00:05:44,450
+Then this of course small. And now the name of the file
+
+86
+00:05:44,820 --> 00:05:49,820
+that we're trying to read. So that is again, test-file.txt.
+
+87
+00:05:50,580 --> 00:05:54,130
+Okay, perfect. So this now creates a stream from
+
+88
+00:05:54,130 --> 00:05:57,090
+the data that is in this text file, which we can then
+
+89
+00:05:57,090 --> 00:06:00,540
+consume piece by piece. So chunk by chunk.
+
+90
+00:06:00,540 --> 00:06:03,350
+And how do we do that? Well, remember from the last
+
+91
+00:06:03,350 --> 00:06:06,600
+lecture, that each time there is a new piece of data
+
+92
+00:06:06,600 --> 00:06:10,020
+that we can consume, a readable stream emits the
+
+93
+00:06:10,020 --> 00:06:13,070
+data event. Okay, and so we can listen to that,
+
+94
+00:06:13,070 --> 00:06:15,313
+just like we learned in the events lecture.
+
+95
+00:06:17,220 --> 00:06:22,220
+So readable.on, data, and then our callback function.
+
+96
+00:06:23,690 --> 00:06:26,910
+And in our callback function, we have access to
+
+97
+00:06:26,910 --> 00:06:28,993
+that piece of data, so to that chunk.
+
+98
+00:06:30,160 --> 00:06:32,660
+Let me call it chunk here in our callback function
+
+99
+00:06:33,540 --> 00:06:37,100
+and so now we can handle this piece of data.
+
+100
+00:06:37,100 --> 00:06:39,060
+And what we're going to do with this piece of data,
+
+101
+00:06:39,060 --> 00:06:42,010
+with this chunk, is to actually write it to a
+
+102
+00:06:42,010 --> 00:06:45,210
+writable stream, which is the response.
+
+103
+00:06:45,210 --> 00:06:50,210
+So, res.write, this chunk. Okay?
+
+104
+00:06:51,250 --> 00:06:54,080
+So again remember that this response is a
+
+105
+00:06:54,080 --> 00:06:57,760
+writable stream. So just as I mentioned in the previous
+
+106
+00:06:57,760 --> 00:07:01,540
+video, right? And so we can now use the write method
+
+107
+00:07:01,540 --> 00:07:06,110
+to send every single piece of data into that stream.
+
+108
+00:07:06,110 --> 00:07:08,920
+Okay, and with this effectively we're streaming
+
+109
+00:07:08,920 --> 00:07:12,230
+the content from the file right to the client.
+
+110
+00:07:12,230 --> 00:07:14,300
+Okay, you understand the difference?
+
+111
+00:07:14,300 --> 00:07:17,710
+So before, we write everything at once into a variable,
+
+112
+00:07:17,710 --> 00:07:21,000
+and once that was ready, we then sent that entire piece
+
+113
+00:07:21,000 --> 00:07:23,927
+of data back to the client. But in this situation,
+
+114
+00:07:23,927 --> 00:07:26,370
+with the stream, it is different.
+
+115
+00:07:26,370 --> 00:07:29,730
+We're effectively streaming the file, so we read one piece
+
+116
+00:07:29,730 --> 00:07:32,670
+of the file, and as soon as that's available,
+
+117
+00:07:32,670 --> 00:07:37,440
+we send it right to the client, using the write method
+
+118
+00:07:37,440 --> 00:07:40,990
+of the respond stream. Then when the next piece is available
+
+119
+00:07:40,990 --> 00:07:44,290
+then that piece will be sent, and all the way until
+
+120
+00:07:44,290 --> 00:07:48,390
+the entire file is read and streamed to the client.
+
+121
+00:07:48,390 --> 00:07:51,650
+Okay, so now just to finish, we also have to handle
+
+122
+00:07:51,650 --> 00:07:54,680
+the event when all the data is read.
+
+123
+00:07:54,680 --> 00:07:57,430
+So when the stream is basically finished reading the data
+
+124
+00:07:57,430 --> 00:07:58,263
+from the file.
+
+125
+00:07:59,580 --> 00:08:03,113
+So on that case, the end event will be emitted,
+
+126
+00:08:05,810 --> 00:08:10,040
+and so as soon as that happens what we're going to do
+
+127
+00:08:10,040 --> 00:08:15,040
+is to do res.end, okay? And we used this one before,
+
+128
+00:08:16,430 --> 00:08:21,220
+so calling end on the response, we did that before, right?
+
+129
+00:08:21,220 --> 00:08:25,000
+And now, it makes actually more sense, because again,
+
+130
+00:08:25,000 --> 00:08:28,540
+the response is also a stream, and the end method
+
+131
+00:08:28,540 --> 00:08:31,820
+signals that no more data will be written to this
+
+132
+00:08:31,820 --> 00:08:34,090
+writable stream, okay?
+
+133
+00:08:34,090 --> 00:08:39,080
+So up here all we did was actually use res.end with the
+
+134
+00:08:39,080 --> 00:08:41,970
+data in it. So we did no streaming, all we did was
+
+135
+00:08:41,970 --> 00:08:44,490
+in the end to send some data.
+
+136
+00:08:44,490 --> 00:08:46,470
+Now in this case, we're not passing anything
+
+137
+00:08:46,470 --> 00:08:50,000
+into this end method, because we already sent all the data
+
+138
+00:08:50,000 --> 00:08:52,930
+using res.write, chunk by chunk,
+
+139
+00:08:52,930 --> 00:08:55,550
+and so when the readable stream is finished reading
+
+140
+00:08:55,550 --> 00:08:59,220
+its file, well all we have to do is to then signal
+
+141
+00:08:59,220 --> 00:09:03,330
+that we're ready using res.end like this, okay?
+
+142
+00:09:03,330 --> 00:09:07,910
+So we always need to use this data and this end event here
+
+143
+00:09:07,910 --> 00:09:11,160
+one after another like this. Because otherwise,
+
+144
+00:09:11,160 --> 00:09:14,030
+the response will actually never really be sent
+
+145
+00:09:14,030 --> 00:09:17,340
+to the client. Okay, so without this piece here,
+
+146
+00:09:17,340 --> 00:09:20,230
+this entire solution would not really work, okay?
+
+147
+00:09:20,230 --> 00:09:25,000
+So lets now close this one, start again,
+
+148
+00:09:25,000 --> 00:09:30,000
+and read again, and so you see that its actually working
+
+149
+00:09:30,880 --> 00:09:35,670
+again, okay? Now this time without the problems we had
+
+150
+00:09:35,670 --> 00:09:39,400
+with the first solution. Lets stop this here, and go back
+
+151
+00:09:39,400 --> 00:09:41,770
+to our code, because I want to show you now,
+
+152
+00:09:41,770 --> 00:09:44,260
+that there is another event that we can listen to
+
+153
+00:09:44,260 --> 00:09:47,403
+on a readable stream, which is the error event.
+
+154
+00:09:49,240 --> 00:09:54,240
+So readable.on('error') and in this callback function
+
+155
+00:09:55,000 --> 00:09:57,733
+we have access to the error object.
+
+156
+00:09:58,810 --> 00:10:03,683
+Okay so in this case we will log this error to the console,
+
+157
+00:10:05,970 --> 00:10:10,593
+and then send the result of file not found.
+
+158
+00:10:14,400 --> 00:10:17,283
+And we can also set the status code to an error,
+
+159
+00:10:20,160 --> 00:10:23,772
+so 500 for example. So usually it's automatically set to 200
+
+160
+00:10:23,772 --> 00:10:28,020
+which means okay, but in this case we have a server error,
+
+161
+00:10:28,020 --> 00:10:31,420
+which means that we want to send back the code 500.
+
+162
+00:10:31,420 --> 00:10:36,213
+All right, so lets now...
+
+163
+00:10:37,390 --> 00:10:39,313
+Actually I need to quit this again.
+
+164
+00:10:45,520 --> 00:10:46,970
+So lets see what happens now.
+
+165
+00:10:53,001 --> 00:10:54,870
+Oh we already have an error right here,
+
+166
+00:10:54,870 --> 00:10:57,790
+res.status is not a function. And yeah,
+
+167
+00:10:57,790 --> 00:11:00,872
+actually its statusCode. So this is the way that
+
+168
+00:11:00,872 --> 00:11:05,100
+you write it in express, so I'm already used to writing
+
+169
+00:11:05,100 --> 00:11:10,100
+express so much, so express is a node.js framework
+
+170
+00:11:10,370 --> 00:11:12,150
+which we're going to use in the rest of the course
+
+171
+00:11:12,150 --> 00:11:15,060
+and in express you do it like this, and so that was
+
+172
+00:11:15,060 --> 00:11:18,420
+the problem. So I'm already a bit too used
+
+173
+00:11:18,420 --> 00:11:19,673
+to writing express.
+
+174
+00:11:22,460 --> 00:11:26,470
+So lets go back, and yeah so now we see file not found,
+
+175
+00:11:26,470 --> 00:11:31,090
+and if we open up the dev tools, you see our 500 error code
+
+176
+00:11:31,090 --> 00:11:34,823
+that we just sent before, and if we go to our network tab,
+
+177
+00:11:36,440 --> 00:11:39,840
+lets try that again, you have the status code here as well.
+
+178
+00:11:39,840 --> 00:11:43,990
+So just like we saw in one of the previous videos in another
+
+179
+00:11:43,990 --> 00:11:47,130
+section actually. So this is how we can inspect this
+
+180
+00:11:47,130 --> 00:11:49,343
+kind of stuff in the network tab.
+
+181
+00:11:52,530 --> 00:11:57,343
+All right, so lets fix it here, give it a save,
+
+182
+00:11:58,300 --> 00:12:03,300
+and okay so this again works just perfectly
+
+183
+00:12:03,550 --> 00:12:06,240
+but there still is a problem with this approach
+
+184
+00:12:06,240 --> 00:12:09,360
+that I just showed you. And the problem is that our
+
+185
+00:12:09,360 --> 00:12:12,240
+readable stream, so the one that we're using to read
+
+186
+00:12:12,240 --> 00:12:16,100
+the file from the disk, is much much faster than actually
+
+187
+00:12:16,100 --> 00:12:19,310
+sending the result with the response writable stream
+
+188
+00:12:19,310 --> 00:12:22,910
+over the network. And this will overwhelm the response
+
+189
+00:12:22,910 --> 00:12:27,360
+stream, which cannot handle all this incoming data so fast.
+
+190
+00:12:27,360 --> 00:12:29,920
+And this problem is called backpressure.
+
+191
+00:12:29,920 --> 00:12:33,510
+And it's a real problem that can happen in real situations.
+
+192
+00:12:33,510 --> 00:12:37,140
+So in this case, backpressure happens when the response
+
+193
+00:12:37,140 --> 00:12:41,130
+cannot send the data nearly as fast as it is receiving it
+
+194
+00:12:41,130 --> 00:12:43,620
+from the file, does that make sense?
+
+195
+00:12:43,620 --> 00:12:46,050
+So we have to fix that solution,
+
+196
+00:12:46,050 --> 00:12:48,793
+and come up with an even better one.
+
+197
+00:12:50,130 --> 00:12:52,813
+And so, we will create solution three,
+
+198
+00:12:55,120 --> 00:12:57,527
+and that is actually the final one,
+
+199
+00:12:57,527 --> 00:13:01,150
+Okay? So no more solutions than three.
+
+200
+00:13:01,150 --> 00:13:05,000
+So the secret here is to actually use that pipe operator
+
+201
+00:13:05,000 --> 00:13:07,405
+that I mentioned in the last video, okay?
+
+202
+00:13:07,405 --> 00:13:12,405
+So the pipe operator is available on all readable streams,
+
+203
+00:13:12,960 --> 00:13:16,760
+and it allows us to pipe the output of a readable stream
+
+204
+00:13:16,760 --> 00:13:20,660
+right into the input of a writable stream, okay?
+
+205
+00:13:20,660 --> 00:13:24,010
+And that will then fix the problem of backpressure
+
+206
+00:13:24,010 --> 00:13:27,340
+because it will automatically handle the speed basically
+
+207
+00:13:27,340 --> 00:13:31,260
+of the data coming in, and the speed of the data going out.
+
+208
+00:13:31,260 --> 00:13:35,603
+Okay, so lets actually get our readable stream here.
+
+209
+00:13:38,290 --> 00:13:41,290
+Okay, so that is our readable stream, and now
+
+210
+00:13:41,290 --> 00:13:45,253
+all we have to do is to take our readable stream,
+
+211
+00:13:46,280 --> 00:13:50,650
+use the pipe method on it, and then put in a writable stream
+
+212
+00:13:50,650 --> 00:13:53,900
+and that is the response. And that's actually it.
+
+213
+00:13:53,900 --> 00:13:57,460
+That's all we have to do for this solution, okay?
+
+214
+00:13:57,460 --> 00:13:59,960
+So it always works like this, let me write it out here
+
+215
+00:13:59,960 --> 00:14:04,960
+as a comment. So we need a readable source basically, okay
+
+216
+00:14:06,040 --> 00:14:09,310
+so again this is just to explain it to you,
+
+217
+00:14:09,310 --> 00:14:12,330
+then we can use the pipe on it, and here we will have to put
+
+218
+00:14:12,330 --> 00:14:17,010
+a writable destination. So this is where our data
+
+219
+00:14:17,010 --> 00:14:19,980
+comes from, and it has to be a readable stream,
+
+220
+00:14:19,980 --> 00:14:24,980
+and that data we can then pipe into a writable destination.
+
+221
+00:14:25,060 --> 00:14:29,520
+So in this case our destination is the response, okay?
+
+222
+00:14:29,520 --> 00:14:32,790
+Now this stream here can actually be a duplex or a
+
+223
+00:14:32,790 --> 00:14:35,790
+transform stream as well, but what matters is that
+
+224
+00:14:35,790 --> 00:14:38,930
+we can write to the stream. And response of course,
+
+225
+00:14:38,930 --> 00:14:42,553
+is such a stream. So we can of course write to the response
+
+226
+00:14:42,553 --> 00:14:45,560
+that will be sent to the client, okay?
+
+227
+00:14:45,560 --> 00:14:48,890
+So the pipe operator automatically solves the problem
+
+228
+00:14:48,890 --> 00:14:51,860
+of backpressure that we had previously.
+
+229
+00:14:51,860 --> 00:14:54,720
+And it's also actually a much more elegant and
+
+230
+00:14:54,720 --> 00:14:58,000
+straight-forward solution. So what we did here before
+
+231
+00:14:58,000 --> 00:15:01,020
+was just to show you all the ways in which we can
+
+232
+00:15:01,020 --> 00:15:05,290
+use the stream methods and events in order to create this
+
+233
+00:15:05,290 --> 00:15:08,520
+kind of solution and of course they have many use cases,
+
+234
+00:15:08,520 --> 00:15:12,044
+but in a problem like this, the pipe operator is actually
+
+235
+00:15:12,044 --> 00:15:16,060
+the best solution. Behind the scenes it does something like
+
+236
+00:15:16,060 --> 00:15:17,950
+this here actually, but again in a
+
+237
+00:15:17,950 --> 00:15:20,880
+much more straight-forward way for us to write,
+
+238
+00:15:20,880 --> 00:15:23,000
+because it handles all the stuff internally
+
+239
+00:15:23,000 --> 00:15:26,500
+behind the scenes. So I believe that pipe here is actually
+
+240
+00:15:26,500 --> 00:15:30,370
+the easiest way of consuming and writing streams, unless
+
+241
+00:15:30,370 --> 00:15:33,410
+of course, as I mentioned, we need a more customized
+
+242
+00:15:33,410 --> 00:15:36,670
+solutions. And then, we have to use these more complicated
+
+243
+00:15:36,670 --> 00:15:39,910
+tools like these events and methods that
+
+244
+00:15:39,910 --> 00:15:43,633
+I showed you before. All right, so just to finish,
+
+245
+00:15:45,270 --> 00:15:50,270
+lets quit the process here, start it again,
+
+246
+00:15:50,370 --> 00:15:54,350
+and of course, see if it still works, which it does.
+
+247
+00:15:54,350 --> 00:15:58,340
+And so, our work is done here. So we're finished with this
+
+248
+00:15:58,340 --> 00:16:01,343
+lecture, and ready to go straight to the next one.
+

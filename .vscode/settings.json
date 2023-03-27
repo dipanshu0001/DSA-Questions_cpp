@@ -1,17 +1,14 @@
 {
+    "C_Cpp.errorSquiggles": "Disabled",
     "files.associations": {
+        "*.ejs": "html",
         "*.html": "html",
+        "cmath": "cpp",
+        "vector": "cpp",
+        "*.tcc": "cpp",
+        "deque": "cpp",
         "iostream": "cpp",
         "ostream": "cpp",
-        "system_error": "cpp",
-        "array": "cpp",
-        "functional": "cpp",
-        "tuple": "cpp",
-        "type_traits": "cpp",
-        "utility": "cpp",
-        "new": "cpp"
-    },
-    "C_Cpp.errorSquiggles": "Enabled",
-    "code-runner.clearPreviousOutput": true,
-    "code-runner.runInTerminal": true
+        "functional": "cpp"
+    }
 }

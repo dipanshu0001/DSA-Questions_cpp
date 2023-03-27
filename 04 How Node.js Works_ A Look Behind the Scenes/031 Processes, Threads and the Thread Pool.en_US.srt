@@ -1,0 +1,360 @@
+1
+00:00:01,400 --> 00:00:03,624
+So, remember that in the last lecture,
+
+2
+00:00:03,624 --> 00:00:06,000
+we talked about the Node architecture,
+
+3
+00:00:06,000 --> 00:00:07,670
+where two fundamental parts
+
+4
+00:00:07,670 --> 00:00:10,810
+are the thread pool and the event loop.
+
+5
+00:00:10,810 --> 00:00:12,630
+So in this lecture, you're gonna learn
+
+6
+00:00:12,630 --> 00:00:14,619
+all about threads and a thread pool.
+
+7
+00:00:14,619 --> 00:00:15,771
+And in the next one,
+
+8
+00:00:15,771 --> 00:00:19,510
+we will then dive deep into the event loop.
+
+9
+00:00:19,510 --> 00:00:20,883
+So, let's get started.
+
+10
+00:00:22,230 --> 00:00:25,660
+So, first off, when we use Node on a computer,
+
+11
+00:00:25,660 --> 00:00:28,210
+it means that there is a Node process
+
+12
+00:00:28,210 --> 00:00:30,110
+running on that computer.
+
+13
+00:00:30,110 --> 00:00:33,530
+And the process is just a program in execution.
+
+14
+00:00:33,530 --> 00:00:35,900
+And we already learned that Node.js
+
+15
+00:00:35,900 --> 00:00:38,490
+is basically a C++ program,
+
+16
+00:00:38,490 --> 00:00:42,040
+which will therefore start a process when it's running.
+
+17
+00:00:42,040 --> 00:00:44,100
+This is important because in Node,
+
+18
+00:00:44,100 --> 00:00:46,980
+we actually have access to a process variable,
+
+19
+00:00:46,980 --> 00:00:49,670
+which we're gonna use later in this course.
+
+20
+00:00:49,670 --> 00:00:52,510
+Now in that process, Node.js runs
+
+21
+00:00:52,510 --> 00:00:54,860
+in a so called, single thread.
+
+22
+00:00:54,860 --> 00:00:58,641
+And a thread is basically just a sequence of instructions.
+
+23
+00:00:58,641 --> 00:01:01,062
+But it's not important to deeply understand
+
+24
+00:01:01,062 --> 00:01:03,690
+what a thread or a process is.
+
+25
+00:01:03,690 --> 00:01:05,740
+That is more about computer science.
+
+26
+00:01:05,740 --> 00:01:08,130
+Just imagine a thread as being a box
+
+27
+00:01:08,130 --> 00:01:11,483
+where our code is executed in a computer's processor.
+
+28
+00:01:12,750 --> 00:01:15,273
+Now, what is important to understand here,
+
+29
+00:01:15,273 --> 00:01:19,100
+is the fact that Node runs in just one thread,
+
+30
+00:01:19,100 --> 00:01:22,346
+which makes it easy to block Node applications.
+
+31
+00:01:22,346 --> 00:01:25,273
+And this is something that we talked about before, actually.
+
+32
+00:01:25,273 --> 00:01:28,650
+But it's something really, really important to remember
+
+33
+00:01:28,650 --> 00:01:30,586
+because this is one of the unique features
+
+34
+00:01:30,586 --> 00:01:33,029
+that Node.js brings to the table.
+
+35
+00:01:33,029 --> 00:01:36,370
+So, again, if you run your Node application,
+
+36
+00:01:36,370 --> 00:01:38,710
+it'll run in just a single thread.
+
+37
+00:01:38,710 --> 00:01:41,834
+No matter if you have 10 users or 10 million users
+
+38
+00:01:41,834 --> 00:01:45,030
+accessing your application at the same.
+
+39
+00:01:45,030 --> 00:01:47,210
+And so you need to be very careful
+
+40
+00:01:47,210 --> 00:01:49,610
+about not blocking that thread.
+
+41
+00:01:49,610 --> 00:01:51,042
+And we will of course, take care of that
+
+42
+00:01:51,042 --> 00:01:53,723
+throughout the project in this course.
+
+43
+00:01:54,890 --> 00:01:57,010
+Moving on, let's now quickly understand
+
+44
+00:01:57,010 --> 00:01:59,700
+exactly what happens in a single thread
+
+45
+00:01:59,700 --> 00:02:02,040
+when you start your Node application.
+
+46
+00:02:02,040 --> 00:02:04,730
+So when the program is initialized,
+
+47
+00:02:04,730 --> 00:02:07,440
+all the top level code is executed,
+
+48
+00:02:07,440 --> 00:02:09,060
+which means all the code that is
+
+49
+00:02:09,060 --> 00:02:10,933
+not inside any callback function.
+
+50
+00:02:12,020 --> 00:02:16,200
+Also, all the modules that your app needs are required
+
+51
+00:02:16,200 --> 00:02:18,560
+and all the callbacks are registered,
+
+52
+00:02:18,560 --> 00:02:20,300
+just like the ones that we used
+
+53
+00:02:20,300 --> 00:02:23,390
+for our HTP server in the Node Farm App.
+
+54
+00:02:23,390 --> 00:02:24,589
+Remember that?
+
+55
+00:02:24,589 --> 00:02:29,589
+Then after all that, the event loop finally starts running.
+
+56
+00:02:29,890 --> 00:02:33,000
+And again, more about the event in loop in the next video.
+
+57
+00:02:33,000 --> 00:02:35,500
+What you need to know for now is that the event loop
+
+58
+00:02:35,500 --> 00:02:38,410
+is where most of the work is done in your app.
+
+59
+00:02:38,410 --> 00:02:42,600
+So, it's really the heart of the entire Node architecture.
+
+60
+00:02:42,600 --> 00:02:46,640
+But here is the catch, some tasks are actually too heavy.
+
+61
+00:02:46,640 --> 00:02:50,570
+They are too expensive to be executed in the event loop
+
+62
+00:02:50,570 --> 00:02:53,510
+because they would then block the single thread.
+
+63
+00:02:53,510 --> 00:02:56,770
+And so, that's where the thread pool comes in,
+
+64
+00:02:56,770 --> 00:02:58,610
+which just like the event loop,
+
+65
+00:02:58,610 --> 00:03:01,670
+is provided to Node.js by the libuv library
+
+66
+00:03:01,670 --> 00:03:03,890
+that we talked about before.
+
+67
+00:03:03,890 --> 00:03:07,140
+So, the thread pool gives us four additional threads
+
+68
+00:03:07,140 --> 00:03:10,560
+that are completely separate from the main single thread.
+
+69
+00:03:10,560 --> 00:03:14,170
+And we can actually configure it up to 128 threads.
+
+70
+00:03:14,170 --> 00:03:16,670
+But usually, these four are enough.
+
+71
+00:03:16,670 --> 00:03:19,630
+So these threads together formed a thread pool.
+
+72
+00:03:19,630 --> 00:03:21,840
+And the event loop can then automatically
+
+73
+00:03:21,840 --> 00:03:25,490
+offload heavy tasks to the thread pool.
+
+74
+00:03:25,490 --> 00:03:28,490
+And all this happens automatically behind the scenes.
+
+75
+00:03:28,490 --> 00:03:30,680
+It's not us developers who decide
+
+76
+00:03:30,680 --> 00:03:33,253
+what goes to thread pool and what doesn't.
+
+77
+00:03:34,780 --> 00:03:37,849
+Now, the expensive tasks that do get offloaded
+
+78
+00:03:37,849 --> 00:03:41,390
+are all operations dealing with files,
+
+79
+00:03:41,390 --> 00:03:44,898
+everything related to cryptography, like caching passwords,
+
+80
+00:03:44,898 --> 00:03:48,860
+then all compression stuff, and also DNS lookups,
+
+81
+00:03:48,860 --> 00:03:50,850
+which basically matches web domains
+
+82
+00:03:50,850 --> 00:03:54,020
+to their corresponding real IP addresses.
+
+83
+00:03:54,020 --> 00:03:55,500
+So this is the stuff that would
+
+84
+00:03:55,500 --> 00:03:57,870
+most easily block the main thread.
+
+85
+00:03:57,870 --> 00:04:00,460
+And so, Node takes care of automatically
+
+86
+00:04:00,460 --> 00:04:02,890
+offloading them into the thread pool,
+
+87
+00:04:02,890 --> 00:04:05,830
+where they don't block our event loop.
+
+88
+00:04:05,830 --> 00:04:07,640
+And that is the most important thing
+
+89
+00:04:07,640 --> 00:04:09,923
+that I want you to retain from this video.
+
+90
+00:04:11,370 --> 00:04:15,693
+So, let's now move on and talk about the event loop itself.
+

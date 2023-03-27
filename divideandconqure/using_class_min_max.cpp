@@ -34,9 +34,5 @@ loop(i,0,n){
 }
 min_max obj=rec_min_max(arr,0,n-1);
 cout<<obj.min_val<<" "<<obj.max_val<<" ";
-
-
-
-
 return 0;
 }

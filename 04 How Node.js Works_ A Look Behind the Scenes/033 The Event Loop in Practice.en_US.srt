@@ -1,0 +1,1448 @@
+1
+00:00:01,190 --> 00:00:02,840
+Let's now write some code
+
+2
+00:00:02,840 --> 00:00:05,520
+in order to get a better understanding
+
+3
+00:00:05,520 --> 00:00:07,893
+of what happens in the event loop.
+
+4
+00:00:09,200 --> 00:00:11,370
+So just like before, to get started
+
+5
+00:00:11,370 --> 00:00:13,670
+with the coding part of this section,
+
+6
+00:00:13,670 --> 00:00:15,970
+go ahead and grab the starter files
+
+7
+00:00:15,970 --> 00:00:18,550
+for this section, copy them somewhere,
+
+8
+00:00:18,550 --> 00:00:22,050
+and then open up the project in your code editor.
+
+9
+00:00:22,050 --> 00:00:24,310
+So I have it here on the desktop,
+
+10
+00:00:24,310 --> 00:00:27,550
+and in my VSCode, and all we have here to start
+
+11
+00:00:27,550 --> 00:00:31,420
+is this test-file.txt, and so I'm gonna create
+
+12
+00:00:31,420 --> 00:00:35,033
+a new file here, and I'm gonna call it the event-loop.js.
+
+13
+00:00:38,040 --> 00:00:41,530
+Alright, now it is actually extremely difficult
+
+14
+00:00:41,530 --> 00:00:44,000
+to simulate the event loop properly,
+
+15
+00:00:44,000 --> 00:00:46,400
+because we can't really put many callbacks
+
+16
+00:00:46,400 --> 00:00:48,080
+in all the callback queues that we
+
+17
+00:00:48,080 --> 00:00:51,260
+talked about before all at the same time, right.
+
+18
+00:00:51,260 --> 00:00:53,710
+That situation happens when for example
+
+19
+00:00:53,710 --> 00:00:56,360
+a lot of requests are coming into your app,
+
+20
+00:00:56,360 --> 00:01:00,240
+but here locally, that's just very hard to replicate.
+
+21
+00:01:00,240 --> 00:01:03,150
+But anyway, we will still do some very interesting
+
+22
+00:01:03,150 --> 00:01:05,390
+experiments using some of the stuff
+
+23
+00:01:05,390 --> 00:01:07,540
+that we learned in the last video.
+
+24
+00:01:07,540 --> 00:01:09,830
+And what we're gonna do is to write a bunch
+
+25
+00:01:09,830 --> 00:01:12,190
+of lines of code, and then try to figure out
+
+26
+00:01:12,190 --> 00:01:15,130
+in which order they should be executed
+
+27
+00:01:15,130 --> 00:01:17,950
+in the event loop, and analyze if the results
+
+28
+00:01:17,950 --> 00:01:20,360
+that we get actually make sense.
+
+29
+00:01:20,360 --> 00:01:22,710
+So let's start by writing a setTimeout,
+
+30
+00:01:24,290 --> 00:01:26,513
+so basically in order to set a timer,
+
+31
+00:01:27,980 --> 00:01:29,890
+and I'm using an arrow function here,
+
+32
+00:01:29,890 --> 00:01:31,270
+and the only thing that I'm gonna do
+
+33
+00:01:31,270 --> 00:01:33,773
+is to log to console some string,
+
+34
+00:01:34,930 --> 00:01:39,930
+so console.log, timer one finished,
+
+35
+00:01:41,800 --> 00:01:45,390
+and I want this to expire right after zero seconds.
+
+36
+00:01:45,390 --> 00:01:47,740
+Okay, give it a save, and then you see
+
+37
+00:01:47,740 --> 00:01:50,030
+that it actually corrected this string here,
+
+38
+00:01:50,030 --> 00:01:53,120
+so it changed this quotes, and added the semicolon,
+
+39
+00:01:53,120 --> 00:01:54,810
+and that's because of the Prettier
+
+40
+00:01:54,810 --> 00:01:56,940
+extension that we installed before.
+
+41
+00:01:56,940 --> 00:01:58,510
+Now I'm not gonna configure it here,
+
+42
+00:01:58,510 --> 00:01:59,850
+because for this small example,
+
+43
+00:01:59,850 --> 00:02:02,050
+that's not really necessary, okay.
+
+44
+00:02:02,050 --> 00:02:05,150
+So that is setting a timer, then let's also use
+
+45
+00:02:05,150 --> 00:02:09,320
+setImmediate, so remember that from the last video.
+
+46
+00:02:09,320 --> 00:02:11,620
+Okay, now I'm not gonna explain a lot here,
+
+47
+00:02:11,620 --> 00:02:13,350
+for now let's write this code,
+
+48
+00:02:13,350 --> 00:02:15,510
+and then analyze what happens, okay.
+
+49
+00:02:15,510 --> 00:02:20,320
+So setImmediate, and just like the other timer,
+
+50
+00:02:20,320 --> 00:02:22,500
+it receives a callback function.
+
+51
+00:02:22,500 --> 00:02:25,130
+And all we're gonna do is to write
+
+52
+00:02:27,720 --> 00:02:31,440
+immediate one finished, and this one doesn't have
+
+53
+00:02:31,440 --> 00:02:33,520
+any time, because it's not necessary
+
+54
+00:02:33,520 --> 00:02:36,930
+because as the name says, it is immediate.
+
+55
+00:02:36,930 --> 00:02:38,540
+Then another thing that we want to do
+
+56
+00:02:38,540 --> 00:02:41,620
+is to read this file here, and then pass
+
+57
+00:02:41,620 --> 00:02:44,930
+a callback function, okay, so the first thing
+
+58
+00:02:44,930 --> 00:02:48,963
+is that we have to require the correct module, so FS,
+
+59
+00:02:52,600 --> 00:02:54,987
+and now fs.readFile, and we want text-file.txt,
+
+60
+00:03:05,586 --> 00:03:08,003
+and then something to happen.
+
+61
+00:03:09,270 --> 00:03:12,153
+And just like before, let's just say here,
+
+62
+00:03:13,740 --> 00:03:17,263
+in this case I/O finished, alright.
+
+63
+00:03:18,830 --> 00:03:21,170
+So I/O because this callback here
+
+64
+00:03:21,170 --> 00:03:24,830
+is actually related to a I/O task,
+
+65
+00:03:24,830 --> 00:03:28,440
+which actually gets it's own phase in the event loop, right.
+
+66
+00:03:28,440 --> 00:03:31,930
+And then finally, let's just add a console.log here,
+
+67
+00:03:31,930 --> 00:03:35,473
+saying well, hello from the top level code.
+
+68
+00:03:37,517 --> 00:03:40,440
+Okay, and so top level code, because it's actually
+
+69
+00:03:40,440 --> 00:03:43,130
+the only one that is not inside of any callback.
+
+70
+00:03:43,130 --> 00:03:46,000
+So in this very small example that we have for now,
+
+71
+00:03:46,000 --> 00:03:48,400
+let's try to figure out what should happen first.
+
+72
+00:03:48,400 --> 00:03:50,510
+Well, remember that the first step
+
+73
+00:03:50,510 --> 00:03:53,310
+when we load a module is that it's top level code
+
+74
+00:03:53,310 --> 00:03:56,000
+gets executed, so right away we should see
+
+75
+00:03:56,000 --> 00:03:59,360
+this console.log here, right, only then later
+
+76
+00:03:59,360 --> 00:04:02,110
+we should see the other logs coming from
+
+77
+00:04:02,110 --> 00:04:04,280
+these other callbacks, because these callbacks
+
+78
+00:04:04,280 --> 00:04:06,820
+will actually run in the event loop.
+
+79
+00:04:06,820 --> 00:04:09,190
+So let's try to see if that's actually the case,
+
+80
+00:04:09,190 --> 00:04:12,000
+and then analyze it a bit better even.
+
+81
+00:04:12,000 --> 00:04:15,150
+So opening up the console here, and again,
+
+82
+00:04:15,150 --> 00:04:17,250
+I'm doing that by using terminal,
+
+83
+00:04:17,250 --> 00:04:22,023
+or actually in the view, so this terminal here, alright.
+
+84
+00:04:23,100 --> 00:04:27,020
+So note, event-loop.js, or actually
+
+85
+00:04:27,020 --> 00:04:30,960
+before we do so, I need to fix this typo here,
+
+86
+00:04:30,960 --> 00:04:33,580
+so it's test file, not text file.
+
+87
+00:04:33,580 --> 00:04:36,093
+Okay, but now we're ready to run this command,
+
+88
+00:04:36,960 --> 00:04:40,320
+and the results are in, so the first log
+
+89
+00:04:40,320 --> 00:04:43,810
+that we have here is hello from the top level code,
+
+90
+00:04:43,810 --> 00:04:46,100
+and that was expected, right, because
+
+91
+00:04:46,100 --> 00:04:49,390
+this is a code that gets executed immediately.
+
+92
+00:04:49,390 --> 00:04:52,940
+Then after that, we have these three outputs,
+
+93
+00:04:52,940 --> 00:04:55,460
+but they are actually in no particular order,
+
+94
+00:04:55,460 --> 00:04:57,640
+and that's because this code here,
+
+95
+00:04:57,640 --> 00:05:00,970
+so this code, is actually not in an I/O cycle,
+
+96
+00:05:00,970 --> 00:05:03,780
+so it's not running inside of the event loop,
+
+97
+00:05:03,780 --> 00:05:07,170
+because it's not running inside of any callback function.
+
+98
+00:05:07,170 --> 00:05:10,370
+Okay, so in your computer, you might actually see
+
+99
+00:05:11,470 --> 00:05:13,160
+this log here before this one,
+
+100
+00:05:13,160 --> 00:05:15,360
+and then this one here is only the last one
+
+101
+00:05:15,360 --> 00:05:18,550
+because this kind of big file here
+
+102
+00:05:18,550 --> 00:05:20,840
+takes some time to read, and so it's
+
+103
+00:05:20,840 --> 00:05:23,060
+probably always gonna be the last one.
+
+104
+00:05:23,060 --> 00:05:27,140
+So again, at this point, the order of these three here
+
+105
+00:05:27,140 --> 00:05:29,640
+doesn't have anything to do with the event loop,
+
+106
+00:05:29,640 --> 00:05:31,320
+because they're actually not running
+
+107
+00:05:31,320 --> 00:05:33,420
+inside the event loop just yet.
+
+108
+00:05:33,420 --> 00:05:36,490
+For that, we will have to move them,
+
+109
+00:05:36,490 --> 00:05:40,490
+or at least move these two here, inside a callback function.
+
+110
+00:05:40,490 --> 00:05:43,713
+And so, for that we're gonna use this one here actually.
+
+111
+00:05:45,270 --> 00:05:50,190
+So let me put it here, and say timer two and timer two here,
+
+112
+00:05:50,190 --> 00:05:55,190
+or immediate two, and I'm also gonna add another timer here,
+
+113
+00:05:55,270 --> 00:05:57,740
+so timer three, and this one is gonna run
+
+114
+00:05:57,740 --> 00:06:01,140
+for three seconds, so that is 3000 milliseconds.
+
+115
+00:06:01,140 --> 00:06:03,840
+So let's now try the result of this one.
+
+116
+00:06:03,840 --> 00:06:06,230
+But before we do that, let's actually think
+
+117
+00:06:06,230 --> 00:06:09,660
+why right after all the code before had run,
+
+118
+00:06:09,660 --> 00:06:13,730
+the program then exited and went back to the prompt here.
+
+119
+00:06:13,730 --> 00:06:16,500
+So remember how Node.js decides if it should continue
+
+120
+00:06:16,500 --> 00:06:19,000
+running the event loop, well it does so
+
+121
+00:06:19,000 --> 00:06:21,620
+by asking if there is still any time running
+
+122
+00:06:21,620 --> 00:06:24,580
+in the background, and if so, it will not finish,
+
+123
+00:06:24,580 --> 00:06:26,800
+and if there is still a pending timer,
+
+124
+00:06:26,800 --> 00:06:29,140
+well then it's not gonna exit the program.
+
+125
+00:06:29,140 --> 00:06:30,920
+But if there's not, which was the case
+
+126
+00:06:30,920 --> 00:06:33,920
+in the first example here, then it immediately
+
+127
+00:06:33,920 --> 00:06:36,660
+exits the program, okay, but now we actually
+
+128
+00:06:36,660 --> 00:06:38,980
+have one timer here, so this one will run
+
+129
+00:06:38,980 --> 00:06:41,620
+for three seconds, and so let's try
+
+130
+00:06:41,620 --> 00:06:43,220
+to figure out what happens here.
+
+131
+00:06:45,260 --> 00:06:47,450
+Okay, so you see that it's not exiting,
+
+132
+00:06:47,450 --> 00:06:50,640
+and only now, after timer three has finished,
+
+133
+00:06:50,640 --> 00:06:53,170
+it did then exit the application.
+
+134
+00:06:53,170 --> 00:06:56,100
+Okay, so let's actually just see that again,
+
+135
+00:06:56,100 --> 00:06:59,480
+so all these logs timers running, timer finished,
+
+136
+00:06:59,480 --> 00:07:02,070
+and so it exited the application.
+
+137
+00:07:02,070 --> 00:07:04,490
+Now about these results here, let's actually make
+
+138
+00:07:04,490 --> 00:07:06,820
+this here a bit easier to see,
+
+139
+00:07:06,820 --> 00:07:10,113
+and add just a small separator here.
+
+140
+00:07:11,360 --> 00:07:14,683
+Okay, clean this, okay.
+
+141
+00:07:16,510 --> 00:07:19,600
+So these four ones here are the outputs
+
+142
+00:07:19,600 --> 00:07:22,110
+that were not really running in the event loop,
+
+143
+00:07:22,110 --> 00:07:24,380
+but these three here were actually coming
+
+144
+00:07:24,380 --> 00:07:28,150
+out of the event loop, so let's now analyze these results.
+
+145
+00:07:28,150 --> 00:07:29,980
+Now, if you'll remember the diagram
+
+146
+00:07:29,980 --> 00:07:32,690
+from the previous lecture, you will probably have thought
+
+147
+00:07:32,690 --> 00:07:36,960
+that the timer, so timer two here,
+
+148
+00:07:36,960 --> 00:07:39,640
+should actually finish before the setImmediate,
+
+149
+00:07:39,640 --> 00:07:42,640
+because in the diagram, it actually appeared first
+
+150
+00:07:42,640 --> 00:07:45,100
+right at the top of the event loop.
+
+151
+00:07:45,100 --> 00:07:48,090
+So we have to set timeout here with zero,
+
+152
+00:07:48,090 --> 00:07:52,500
+which should kind of be the same as setImmediate, right.
+
+153
+00:07:52,500 --> 00:07:54,610
+So why does setImmediate actually
+
+154
+00:07:54,610 --> 00:07:57,630
+appear before the setTimeout?
+
+155
+00:07:57,630 --> 00:08:00,020
+Well, there's something that I didn't really explain
+
+156
+00:08:00,020 --> 00:08:02,470
+in the last video, because I didn't want to make it
+
+157
+00:08:02,470 --> 00:08:05,750
+even more confusing, and that is that the event loop
+
+158
+00:08:05,750 --> 00:08:09,320
+actually waits for stuff to happen in the poll phase.
+
+159
+00:08:09,320 --> 00:08:12,270
+So in that phase where I/O callbacks are handled.
+
+160
+00:08:12,270 --> 00:08:15,400
+So when this queue of callbacks is empty,
+
+161
+00:08:15,400 --> 00:08:17,940
+which is the case in our fictional example here,
+
+162
+00:08:17,940 --> 00:08:20,270
+so we have no I/O callbacks, all we have
+
+163
+00:08:20,270 --> 00:08:23,500
+is these timers, well then the event loop
+
+164
+00:08:23,500 --> 00:08:27,490
+will wait in this phase until there is an expired timer.
+
+165
+00:08:27,490 --> 00:08:31,430
+But, if we scheduled a callback using setImmediate,
+
+166
+00:08:31,430 --> 00:08:34,320
+then that callback will actually be executed
+
+167
+00:08:34,320 --> 00:08:36,920
+right away after the polling phase,
+
+168
+00:08:36,920 --> 00:08:40,240
+and even before expired timers, if there is one.
+
+169
+00:08:40,240 --> 00:08:43,270
+And in this case, the timer expires right away,
+
+170
+00:08:43,270 --> 00:08:46,080
+so after zero seconds, but again, the event loop
+
+171
+00:08:46,080 --> 00:08:49,710
+actually waits, so it pauses in the polling phase.
+
+172
+00:08:49,710 --> 00:08:52,100
+And so that setImmediate callback
+
+173
+00:08:52,100 --> 00:08:55,580
+is actually executed first, so that is the whole reason
+
+174
+00:08:55,580 --> 00:08:59,730
+why we have this immediate here after we have the timers.
+
+175
+00:08:59,730 --> 00:09:02,770
+Okay, and I know this sounds very confusing,
+
+176
+00:09:02,770 --> 00:09:04,810
+and I completely agree, but really
+
+177
+00:09:04,810 --> 00:09:08,090
+that's just the way Node.js works.
+
+178
+00:09:08,090 --> 00:09:11,380
+And now let's make this even a little bit more confusing,
+
+179
+00:09:11,380 --> 00:09:14,250
+and add the process.nextTick that
+
+180
+00:09:14,250 --> 00:09:16,950
+we talked about also in the last lecture.
+
+181
+00:09:16,950 --> 00:09:21,950
+So we say process.nextTick, and then just like before,
+
+182
+00:09:22,170 --> 00:09:24,323
+we simply pass it a callback function.
+
+183
+00:09:25,540 --> 00:09:27,640
+And again, I just wanna log to console,
+
+184
+00:09:27,640 --> 00:09:31,663
+and I'm gonna say process.nextTick.
+
+185
+00:09:32,550 --> 00:09:36,150
+So what do you think will happen in this case?
+
+186
+00:09:36,150 --> 00:09:40,170
+Go ahead and make a guess, and once you're ready
+
+187
+00:09:40,170 --> 00:09:42,883
+you can then run this, so let's do that.
+
+188
+00:09:44,120 --> 00:09:48,280
+Save it here first, run it, and so here we go.
+
+189
+00:09:48,280 --> 00:09:51,760
+So the results are again in, and now the first callback
+
+190
+00:09:51,760 --> 00:09:55,640
+that was executed was actually this function here.
+
+191
+00:09:55,640 --> 00:09:58,220
+So that's why we have process.nextTick
+
+192
+00:09:58,220 --> 00:09:59,710
+right in the first one.
+
+193
+00:09:59,710 --> 00:10:03,500
+So why was this callback function of process.nextTick
+
+194
+00:10:03,500 --> 00:10:06,570
+the first one of all of them to be executed?
+
+195
+00:10:06,570 --> 00:10:09,070
+Well, remember that nextTick is part
+
+196
+00:10:09,070 --> 00:10:12,410
+of the microtasks queue, which get executed
+
+197
+00:10:12,410 --> 00:10:16,530
+after each phase, so not just after one entire tick.
+
+198
+00:10:16,530 --> 00:10:19,120
+And so what happened here is that this callback function
+
+199
+00:10:19,120 --> 00:10:23,660
+actually ran before the phase where this callback function
+
+200
+00:10:23,660 --> 00:10:26,970
+here ran, and the phase before that, okay.
+
+201
+00:10:26,970 --> 00:10:30,850
+Now nextTick is actually really a misleading name,
+
+202
+00:10:30,850 --> 00:10:33,990
+because a tick is actually an entire loop,
+
+203
+00:10:33,990 --> 00:10:37,860
+but nextTick actually happens before the next loop phase,
+
+204
+00:10:37,860 --> 00:10:41,990
+and not the entire tick, so that's what I was saying before.
+
+205
+00:10:41,990 --> 00:10:45,830
+Then on the other side, setImmediate would make you think
+
+206
+00:10:45,830 --> 00:10:49,690
+that it's callback would be executed immediately,
+
+207
+00:10:49,690 --> 00:10:52,780
+but it actually doesn't, right, so setImmediate
+
+208
+00:10:52,780 --> 00:10:55,570
+actually gets executed once per tick,
+
+209
+00:10:55,570 --> 00:10:58,800
+while nextTick gets executed immediately.
+
+210
+00:10:58,800 --> 00:11:01,820
+And so their two names should actually be switched.
+
+211
+00:11:01,820 --> 00:11:03,700
+They should be the other way around,
+
+212
+00:11:03,700 --> 00:11:05,390
+and this can cause a lot of confusion,
+
+213
+00:11:05,390 --> 00:11:08,440
+so it's best to just always stick to one of them,
+
+214
+00:11:08,440 --> 00:11:12,470
+and that's usually setImmediate and not process.nextTick.
+
+215
+00:11:12,470 --> 00:11:15,070
+Now anyway, as I mentioned in a last video,
+
+216
+00:11:15,070 --> 00:11:18,530
+these mechanisms are actually more for pretty advanced
+
+217
+00:11:18,530 --> 00:11:20,320
+use cases, which is why we will
+
+218
+00:11:20,320 --> 00:11:22,760
+probably not use them in our project.
+
+219
+00:11:22,760 --> 00:11:24,970
+But if you want to learn more about them,
+
+220
+00:11:24,970 --> 00:11:28,060
+you can always read the official Node documentation.
+
+221
+00:11:28,060 --> 00:11:30,660
+Okay, so with this we have simulated
+
+222
+00:11:30,660 --> 00:11:33,250
+some aspects of the event loop,
+
+223
+00:11:33,250 --> 00:11:35,500
+but to finish, I want to just quickly
+
+224
+00:11:35,500 --> 00:11:38,290
+introduce something about thread pool as well,
+
+225
+00:11:38,290 --> 00:11:40,950
+and for that we're gonna do a more complex operation
+
+226
+00:11:40,950 --> 00:11:43,490
+that will actually be offloaded to the thread pool,
+
+227
+00:11:43,490 --> 00:11:47,040
+and take a look at how long these operations take to run,
+
+228
+00:11:47,040 --> 00:11:48,510
+and how we can change the thread pool
+
+229
+00:11:48,510 --> 00:11:50,870
+size that we talked about before.
+
+230
+00:11:50,870 --> 00:11:52,840
+So we're gonna use some cryptography here
+
+231
+00:11:52,840 --> 00:11:55,203
+to basically encrypt a password.
+
+232
+00:11:58,620 --> 00:12:00,820
+So that's a new package we hadn't used before,
+
+233
+00:12:00,820 --> 00:12:04,130
+and it's called Crypto, but I mentioned earlier
+
+234
+00:12:04,130 --> 00:12:07,063
+that actually, all the functions from this package,
+
+235
+00:12:07,960 --> 00:12:11,260
+they will be offloaded automatically by the event loop
+
+236
+00:12:11,260 --> 00:12:13,280
+to the thread pool, and so that's
+
+237
+00:12:13,280 --> 00:12:14,780
+what we're gonna test out now.
+
+238
+00:12:18,380 --> 00:12:22,070
+And let's use this now, so crypto.pb,
+
+239
+00:12:22,070 --> 00:12:25,303
+so we're gonna use an encryption function called pbkdf2,
+
+240
+00:12:27,610 --> 00:12:31,050
+so kind of a weird name, and now we pass in
+
+241
+00:12:31,050 --> 00:12:34,640
+the secret string, which let's just say password,
+
+242
+00:12:34,640 --> 00:12:37,520
+then we need a string to solve the passwords,
+
+243
+00:12:37,520 --> 00:12:40,820
+and the implementations here don't really matter,
+
+244
+00:12:40,820 --> 00:12:42,970
+so for now I'm not gonna go into any detail
+
+245
+00:12:42,970 --> 00:12:46,150
+of how this works, we're gonna do that later, okay,
+
+246
+00:12:46,150 --> 00:12:48,320
+so here we just need the key length,
+
+247
+00:12:48,320 --> 00:12:50,070
+so this number here is just for the number
+
+248
+00:12:50,070 --> 00:12:53,870
+of iterations, then this is the key length,
+
+249
+00:12:53,870 --> 00:12:56,020
+and then finally the algorithm,
+
+250
+00:12:56,020 --> 00:12:58,430
+which is gonna be used to encrypt the password.
+
+251
+00:12:58,430 --> 00:13:00,380
+So these numbers will simply increase
+
+252
+00:13:00,380 --> 00:13:02,483
+the time it takes for the encryption.
+
+253
+00:13:04,970 --> 00:13:08,610
+Okay and then finally, it also takes a callback function,
+
+254
+00:13:08,610 --> 00:13:11,483
+and all I'm gonna do here is to do another console.log,
+
+255
+00:13:12,730 --> 00:13:16,453
+and just say password encrypted.
+
+256
+00:13:17,950 --> 00:13:20,740
+Now, for the purpose of this demonstration,
+
+257
+00:13:20,740 --> 00:13:24,220
+I actually want to show you how much time
+
+258
+00:13:24,220 --> 00:13:27,400
+each of these operations take, so what we're gonna do
+
+259
+00:13:27,400 --> 00:13:32,010
+is to basically define a variable in the beginning,
+
+260
+00:13:32,010 --> 00:13:37,010
+set it to date.now, so that is the current date
+
+261
+00:13:37,120 --> 00:13:41,310
+in milliseconds, and then here, all we have to do
+
+262
+00:13:41,310 --> 00:13:46,310
+is to log not only the string, but also date.now,
+
+263
+00:13:46,310 --> 00:13:49,700
+which will be the date at this point in milliseconds,
+
+264
+00:13:49,700 --> 00:13:53,010
+minus the start, and so that will then give us
+
+265
+00:13:53,010 --> 00:13:55,380
+the amount of milliseconds that have passed
+
+266
+00:13:55,380 --> 00:13:57,380
+in order to do this calculation.
+
+267
+00:13:57,380 --> 00:13:59,693
+Okay, so let's try it out, give it a save,
+
+268
+00:14:00,890 --> 00:14:05,360
+and run it again, and so here you see
+
+269
+00:14:05,360 --> 00:14:08,530
+that it took 1855 milliseconds,
+
+270
+00:14:08,530 --> 00:14:12,250
+so almost two seconds to encrypt this password.
+
+271
+00:14:12,250 --> 00:14:15,110
+Okay, but now let's actually duplicate
+
+272
+00:14:15,110 --> 00:14:17,360
+this code, or actually I want four instances
+
+273
+00:14:17,360 --> 00:14:19,660
+of this to show you something.
+
+274
+00:14:19,660 --> 00:14:23,400
+So if we run this now, it should probably take
+
+275
+00:14:23,400 --> 00:14:25,710
+approximately the same amount of time,
+
+276
+00:14:25,710 --> 00:14:27,980
+and yeah it does, so it was 1.8 seconds,
+
+277
+00:14:27,980 --> 00:14:31,620
+now it's 2.2 seconds, which is quite similar.
+
+278
+00:14:31,620 --> 00:14:34,530
+Okay, and remember that I told you in one of
+
+279
+00:14:34,530 --> 00:14:36,630
+the earlier lectures, that by default
+
+280
+00:14:36,630 --> 00:14:39,360
+the size of the thread pool is four,
+
+281
+00:14:39,360 --> 00:14:41,720
+so there are four threads doing the work
+
+282
+00:14:41,720 --> 00:14:44,010
+at the same time, and so that's why
+
+283
+00:14:44,010 --> 00:14:46,160
+these four password encryptions
+
+284
+00:14:46,160 --> 00:14:48,000
+take approximately the same time
+
+285
+00:14:48,000 --> 00:14:50,740
+and happen basically all at the same time.
+
+286
+00:14:50,740 --> 00:14:53,990
+But we can actually change that thread pool size.
+
+287
+00:14:53,990 --> 00:14:57,100
+So, let me show you how we do that,
+
+288
+00:14:57,100 --> 00:14:59,867
+and we do that by saying process.env,
+
+289
+00:15:01,290 --> 00:15:03,230
+and that's an environmental variable,
+
+290
+00:15:03,230 --> 00:15:05,680
+and again we're gonna talk more about that later,
+
+291
+00:15:06,684 --> 00:15:08,613
+and UV, which stands for LibUV,
+
+292
+00:15:11,232 --> 00:15:15,500
+threadpool size, so if we set this to one,
+
+293
+00:15:15,500 --> 00:15:18,783
+we will only have one thread in our thread pool.
+
+294
+00:15:21,110 --> 00:15:26,110
+So let's try that again, and so let's see what happens now.
+
+295
+00:15:28,650 --> 00:15:32,840
+So you see that they all take much longer to calculate.
+
+296
+00:15:32,840 --> 00:15:35,490
+Basically, they are calculated one after the other.
+
+297
+00:15:35,490 --> 00:15:38,470
+So this one the first, then this one here takes
+
+298
+00:15:38,470 --> 00:15:40,610
+double the time, and again that's because
+
+299
+00:15:40,610 --> 00:15:42,980
+this one can only start as soon as
+
+300
+00:15:42,980 --> 00:15:45,160
+the first one is completed, and the same
+
+301
+00:15:45,160 --> 00:15:46,893
+with the third and the fourth one.
+
+302
+00:15:47,920 --> 00:15:49,620
+Now let's say we change it to two,
+
+303
+00:15:52,170 --> 00:15:54,300
+then we should see the first two ones
+
+304
+00:15:54,300 --> 00:15:56,990
+with the same time, and exactly,
+
+305
+00:15:56,990 --> 00:15:59,710
+the second two also with a similar time.
+
+306
+00:15:59,710 --> 00:16:01,363
+So that makes sense, right.
+
+307
+00:16:02,650 --> 00:16:04,500
+Just for the sake of completion here,
+
+308
+00:16:05,610 --> 00:16:08,950
+now the same with three, so these three
+
+309
+00:16:08,950 --> 00:16:11,340
+have a similar time, and then the last one.
+
+310
+00:16:11,340 --> 00:16:15,440
+Alright, so this is how the thread pool works basically,
+
+311
+00:16:15,440 --> 00:16:18,660
+so I decided to not only focus on the event loop,
+
+312
+00:16:18,660 --> 00:16:22,630
+but also to give you an overview, a very quick one,
+
+313
+00:16:22,630 --> 00:16:25,010
+of the thread pool and how we can change
+
+314
+00:16:25,010 --> 00:16:27,620
+the thread pool size, okay, keep in mind
+
+315
+00:16:27,620 --> 00:16:29,560
+that this code here is actually still
+
+316
+00:16:29,560 --> 00:16:33,230
+asynchronous, because we passed in a callback function.
+
+317
+00:16:33,230 --> 00:16:36,490
+Okay, and we could actually use the synchronous version,
+
+318
+00:16:36,490 --> 00:16:38,920
+but that would then block the event loop.
+
+319
+00:16:38,920 --> 00:16:40,650
+Wanna see that?
+
+320
+00:16:40,650 --> 00:16:43,183
+So let me very quickly show that to you as well,
+
+321
+00:16:44,120 --> 00:16:46,130
+so that one was not really planned,
+
+322
+00:16:46,130 --> 00:16:48,240
+but let's do it anyway, 'cause it's
+
+323
+00:16:48,240 --> 00:16:50,090
+very interesting to see that I think.
+
+324
+00:16:51,580 --> 00:16:53,830
+Okay, so that will work like this.
+
+325
+00:16:53,830 --> 00:16:57,570
+We use again the sync version of the same function,
+
+326
+00:16:57,570 --> 00:16:59,950
+which a note, is many times available.
+
+327
+00:16:59,950 --> 00:17:02,760
+Remember we have the same for the read file,
+
+328
+00:17:02,760 --> 00:17:05,190
+so we have read file, which accepts a callback,
+
+329
+00:17:05,190 --> 00:17:08,290
+and we have read file sync, which is the synchronous version
+
+330
+00:17:08,290 --> 00:17:11,440
+which doesn't accept any callback, so just like this.
+
+331
+00:17:11,440 --> 00:17:13,520
+So this one will then encrypt the password,
+
+332
+00:17:13,520 --> 00:17:16,890
+block the code execution, and then move on to the next line,
+
+333
+00:17:16,890 --> 00:17:19,700
+which will then log this here to the console.
+
+334
+00:17:19,700 --> 00:17:21,823
+So let's now duplicate this here.
+
+335
+00:17:23,570 --> 00:17:26,553
+That was too much, get rid of this one here,
+
+336
+00:17:27,500 --> 00:17:31,310
+and so now these four password encryptions
+
+337
+00:17:31,310 --> 00:17:33,350
+will no longer run in the event loop.
+
+338
+00:17:33,350 --> 00:17:37,070
+And so they will no longer be offloaded to the thread pool.
+
+339
+00:17:37,070 --> 00:17:39,980
+Okay, and so now even if we have the thread pool size
+
+340
+00:17:39,980 --> 00:17:42,583
+of four, let's see what happens.
+
+341
+00:17:46,010 --> 00:17:50,080
+So you see, they happen completely in a synchronous way.
+
+342
+00:17:50,080 --> 00:17:53,290
+So one after the other, and what is even worse,
+
+343
+00:17:53,290 --> 00:17:55,350
+is that all of these timers here,
+
+344
+00:17:55,350 --> 00:17:57,960
+even nextTick and the immediate one,
+
+345
+00:17:57,960 --> 00:18:01,850
+only appeared after the password encryptions happened.
+
+346
+00:18:01,850 --> 00:18:04,990
+So this really was blocking the entire execution,
+
+347
+00:18:04,990 --> 00:18:07,460
+even if this timer here, for example this one here,
+
+348
+00:18:07,460 --> 00:18:09,580
+was finished after zero seconds,
+
+349
+00:18:09,580 --> 00:18:11,440
+and this one after three seconds,
+
+350
+00:18:11,440 --> 00:18:13,830
+but they all have to wait seven seconds
+
+351
+00:18:13,830 --> 00:18:16,010
+until all of these password encryptions here
+
+352
+00:18:16,010 --> 00:18:19,670
+were finally ready, again because they were not running
+
+353
+00:18:19,670 --> 00:18:22,120
+inside the event loop, but these were.
+
+354
+00:18:22,120 --> 00:18:24,960
+And so they were basically working in the background
+
+355
+00:18:24,960 --> 00:18:26,890
+and could only be picked up by the event loop
+
+356
+00:18:26,890 --> 00:18:29,470
+when they were ready, right after these four
+
+357
+00:18:29,470 --> 00:18:32,110
+password encryptions, so this one was
+
+358
+00:18:32,110 --> 00:18:34,760
+another great example of seeing the
+
+359
+00:18:34,760 --> 00:18:38,240
+code blocking and event loop all in action.
+
+360
+00:18:38,240 --> 00:18:41,600
+Okay, so that was enough for one lecture,
+
+361
+00:18:41,600 --> 00:18:43,270
+I hope that you found it interesting,
+
+362
+00:18:43,270 --> 00:18:45,220
+and I'll see you right in the next one.
+

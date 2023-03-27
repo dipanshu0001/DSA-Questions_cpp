@@ -1,0 +1,1088 @@
+1
+00:00:01,030 --> 00:00:02,780
+As promised, we will now use
+
+2
+00:00:02,780 --> 00:00:06,083
+event emitters and listeners in practice,
+
+3
+00:00:07,500 --> 00:00:10,203
+and we start by creating a new file here.
+
+4
+00:00:11,770 --> 00:00:15,470
+So events.js and close up this one.
+
+5
+00:00:15,470 --> 00:00:18,250
+So to use the built in node events,
+
+6
+00:00:18,250 --> 00:00:20,743
+we need to require the events module,
+
+7
+00:00:21,890 --> 00:00:22,880
+and from that we're going
+
+8
+00:00:22,880 --> 00:00:25,533
+to require an EventEmitter class.
+
+9
+00:00:27,580 --> 00:00:30,300
+So, EventEmitter, this is kind of the standard name
+
+10
+00:00:30,300 --> 00:00:34,743
+for the result of requiring this events module.
+
+11
+00:00:35,740 --> 00:00:38,890
+So again this is a built in node module, okay?
+
+12
+00:00:38,890 --> 00:00:40,600
+And now to create a new emitter,
+
+13
+00:00:40,600 --> 00:00:42,940
+we simply create an instance basically
+
+14
+00:00:42,940 --> 00:00:45,530
+of the class that we just imported.
+
+15
+00:00:45,530 --> 00:00:47,273
+So very simple myEmitter
+
+16
+00:00:49,470 --> 00:00:52,160
+is a new EventEmitter.
+
+17
+00:00:52,160 --> 00:00:56,240
+So EventEmitter just like this.
+
+18
+00:00:56,240 --> 00:00:58,580
+So remember from the last video
+
+19
+00:00:58,580 --> 00:01:01,690
+that EventEmitters can emit named events,
+
+20
+00:01:01,690 --> 00:01:04,090
+and we can then subscribe to these events,
+
+21
+00:01:04,090 --> 00:01:05,870
+so basically listen to them,
+
+22
+00:01:05,870 --> 00:01:08,840
+and then react accordingly, okay?
+
+23
+00:01:08,840 --> 00:01:10,990
+So it's a bit like setting up
+
+24
+00:01:10,990 --> 00:01:13,570
+an EventListener on a dumb element,
+
+25
+00:01:13,570 --> 00:01:15,800
+for example, for clicking on a button,
+
+26
+00:01:15,800 --> 00:01:17,360
+and I'm sure you've done it before,
+
+27
+00:01:17,360 --> 00:01:20,700
+when working with JavaScript on the client side, right?
+
+28
+00:01:20,700 --> 00:01:22,590
+So our emitter will eventually
+
+29
+00:01:22,590 --> 00:01:25,000
+emit a named event, okay?
+
+30
+00:01:25,000 --> 00:01:26,093
+So let's set that up,
+
+31
+00:01:27,050 --> 00:01:29,230
+and let's simply pretend that we're
+
+32
+00:01:29,230 --> 00:01:34,230
+building an online store or something, okay?
+
+33
+00:01:34,390 --> 00:01:37,277
+So we can say myEmitter.emit(),
+
+34
+00:01:37,277 --> 00:01:42,277
+and then we can make up any event name that we want, okay?
+
+35
+00:01:43,690 --> 00:01:48,040
+So we want to emit an event called newSale, okay?
+
+36
+00:01:48,040 --> 00:01:50,410
+And using the example of clicking
+
+37
+00:01:50,410 --> 00:01:52,470
+on a button that I used before,
+
+38
+00:01:52,470 --> 00:01:57,250
+this emitting here is as if we were clicking on the button,
+
+39
+00:01:57,250 --> 00:02:01,820
+and so now we have to set up these listeners, okay?
+
+40
+00:02:01,820 --> 00:02:03,820
+And let me actually do that before here,
+
+41
+00:02:04,760 --> 00:02:09,000
+and so again we use our myEmitter object.
+
+42
+00:02:09,000 --> 00:02:12,470
+Enter that we use the on method, okay?
+
+43
+00:02:12,470 --> 00:02:17,330
+So on newSale and then the callback function ,
+
+44
+00:02:17,330 --> 00:02:21,673
+which is gonna get executed as soon as the event is emitted.
+
+45
+00:02:23,960 --> 00:02:28,287
+So as usually, let's simply to the console.
+
+46
+00:02:28,287 --> 00:02:31,810
+"There was a new sale!"
+
+47
+00:02:31,810 --> 00:02:35,400
+Okay, and let's add another one.
+
+48
+00:02:35,400 --> 00:02:37,060
+So remember that I said earlier
+
+49
+00:02:37,060 --> 00:02:40,850
+that one of the nice things about these event emitters
+
+50
+00:02:40,850 --> 00:02:42,000
+is that we can actually set up
+
+51
+00:02:42,000 --> 00:02:44,153
+multiple listeners for the same event.
+
+52
+00:02:45,350 --> 00:02:46,643
+So let's do that here,
+
+53
+00:02:48,330 --> 00:02:50,220
+and so again, of course, we're listening
+
+54
+00:02:50,220 --> 00:02:52,413
+for the newSale event,
+
+55
+00:02:53,308 --> 00:02:55,391
+(typing)
+
+56
+00:02:57,608 --> 00:02:59,370
+and then log just something else.
+
+57
+00:02:59,370 --> 00:03:01,200
+Doesn't really matter here.
+
+58
+00:03:01,200 --> 00:03:04,520
+So '"Customer name:', for example 'Jonas"'.
+
+59
+00:03:04,520 --> 00:03:06,510
+So, let's test this out,
+
+60
+00:03:06,510 --> 00:03:08,370
+clear the one from before,
+
+61
+00:03:08,370 --> 00:03:09,530
+and we use node,
+
+62
+00:03:09,530 --> 00:03:12,323
+and then events.js.
+
+63
+00:03:13,250 --> 00:03:16,900
+So, There was a sale and Customer name: Jonas,
+
+64
+00:03:16,900 --> 00:03:19,830
+and so you see already that it's working.
+
+65
+00:03:19,830 --> 00:03:24,170
+So, great, so this is the observer pattern, remember?
+
+66
+00:03:24,170 --> 00:03:28,660
+Where this one here is the object that emits the events,
+
+67
+00:03:28,660 --> 00:03:29,740
+and then these two here,
+
+68
+00:03:29,740 --> 00:03:31,750
+so this on and this on,
+
+69
+00:03:31,750 --> 00:03:33,250
+these are the observers.
+
+70
+00:03:33,250 --> 00:03:34,950
+They observe the emitter
+
+71
+00:03:34,950 --> 00:03:39,060
+and wait until it emits the newSale event.
+
+72
+00:03:39,060 --> 00:03:42,710
+And, of course, our emitter could also emit other events.
+
+73
+00:03:42,710 --> 00:03:46,630
+Like new customer or new order or something like that,
+
+74
+00:03:46,630 --> 00:03:50,950
+and we could then add listeners for that one as well, okay?
+
+75
+00:03:50,950 --> 00:03:52,860
+Now another thing that I wanted to show you
+
+76
+00:03:52,860 --> 00:03:56,580
+is that we can even pass arguments to the EventListener
+
+77
+00:03:56,580 --> 00:03:58,450
+by passing them as an additional
+
+78
+00:03:58,450 --> 00:04:02,160
+argument in the emitter, here.
+
+79
+00:04:02,160 --> 00:04:05,260
+So let's say that pass nine,
+
+80
+00:04:05,260 --> 00:04:06,900
+so in this case just a number,
+
+81
+00:04:06,900 --> 00:04:10,013
+and we then have a listener that wants to use that.
+
+82
+00:04:10,848 --> 00:04:12,520
+(typing)
+
+83
+00:04:12,520 --> 00:04:14,529
+So myEmitter,
+
+84
+00:04:14,529 --> 00:04:16,612
+(typing)
+
+85
+00:04:17,553 --> 00:04:18,710
+newSale,
+
+86
+00:04:18,710 --> 00:04:22,080
+and so now this callback function can take an argument,
+
+87
+00:04:22,080 --> 00:04:23,713
+and so let's call it stock.
+
+88
+00:04:25,460 --> 00:04:28,940
+So basically the amount of items that are left
+
+89
+00:04:29,910 --> 00:04:33,560
+from the product that we're selling here.
+
+90
+00:04:33,560 --> 00:04:35,300
+Let's use a template string.
+
+91
+00:04:35,300 --> 00:04:37,430
+There are now
+
+92
+00:04:39,970 --> 00:04:42,690
+stock items
+
+93
+00:04:45,240 --> 00:04:46,115
+left in stock.
+
+94
+00:04:46,115 --> 00:04:48,640
+So, if we run this now,
+
+95
+00:04:48,640 --> 00:04:51,620
+we should see There are now nine items left in stock
+
+96
+00:04:51,620 --> 00:04:54,130
+because we emitted this event
+
+97
+00:04:54,130 --> 00:04:56,210
+basically with a nine,
+
+98
+00:04:56,210 --> 00:04:58,500
+and the listener can then pick up this value here
+
+99
+00:04:58,500 --> 00:05:01,490
+as an argument of their callback functions.
+
+100
+00:05:01,490 --> 00:05:03,860
+So this stock variable here in this case.
+
+101
+00:05:03,860 --> 00:05:05,260
+So if you run this again,
+
+102
+00:05:05,260 --> 00:05:07,940
+then here There are nine items left in stock.
+
+103
+00:05:07,940 --> 00:05:10,730
+So, perfect, and you see that
+
+104
+00:05:10,730 --> 00:05:13,554
+these three logs here appear in the exact same order
+
+105
+00:05:13,554 --> 00:05:16,050
+that they are declared in the code, okay?
+
+106
+00:05:16,050 --> 00:05:17,770
+And so that's the normal behavior.
+
+107
+00:05:17,770 --> 00:05:20,509
+If we have multiple listeners for the same event,
+
+108
+00:05:20,509 --> 00:05:22,510
+then they will run synchronously.
+
+109
+00:05:22,510 --> 00:05:24,930
+So one after the other in the order
+
+110
+00:05:24,930 --> 00:05:26,780
+that they were in the code.
+
+111
+00:05:26,780 --> 00:05:29,600
+So this small example works perfectly already,
+
+112
+00:05:29,600 --> 00:05:32,440
+but if you were to use this pattern in real life,
+
+113
+00:05:32,440 --> 00:05:35,490
+then it's a best practice to create a new class
+
+114
+00:05:35,490 --> 00:05:38,900
+that will actually inherit from the node EventEmitter.
+
+115
+00:05:38,900 --> 00:05:40,793
+So, something like this.
+
+116
+00:05:41,729 --> 00:05:44,320
+(typing)
+
+117
+00:05:44,320 --> 00:05:49,247
+So let's say class Sales extends EventEmitter,
+
+118
+00:05:50,800 --> 00:05:55,800
+and that is ES6 or ES2015 syntax for class inheritance.
+
+119
+00:05:56,000 --> 00:05:57,800
+And again, I hope that you're familiar
+
+120
+00:05:57,800 --> 00:06:01,700
+with ES6 at the time you're taking this course, okay?
+
+121
+00:06:01,700 --> 00:06:05,760
+So in rote terms, the EventEmitter is a class,
+
+122
+00:06:05,760 --> 00:06:07,920
+so the one that we imported from events
+
+123
+00:06:07,920 --> 00:06:09,330
+into our sales class,
+
+124
+00:06:09,330 --> 00:06:11,230
+is the new class that we're creating,
+
+125
+00:06:11,230 --> 00:06:13,070
+and that inherits everything
+
+126
+00:06:13,070 --> 00:06:15,930
+from the EventEmitter class, okay?
+
+127
+00:06:15,930 --> 00:06:19,110
+Then in ES6 each class gets a constructor
+
+128
+00:06:19,110 --> 00:06:20,623
+which is a function that is run
+
+129
+00:06:20,623 --> 00:06:25,120
+as soon as we create a new object from a class, okay?
+
+130
+00:06:25,120 --> 00:06:27,863
+And what we need to do here is to call super,
+
+131
+00:06:28,780 --> 00:06:31,000
+and that's something that we always have to do
+
+132
+00:06:31,000 --> 00:06:35,130
+when we extend another superclass, okay?
+
+133
+00:06:35,130 --> 00:06:36,330
+So this is the parent class,
+
+134
+00:06:36,330 --> 00:06:38,420
+and this is the superclass,
+
+135
+00:06:38,420 --> 00:06:39,950
+and by running super,
+
+136
+00:06:39,950 --> 00:06:43,920
+we then get access to all the methods of the parent class.
+
+137
+00:06:43,920 --> 00:06:47,210
+So, again, EventEmitter in this case, okay?
+
+138
+00:06:47,210 --> 00:06:50,229
+And so now what we have to do is to
+
+139
+00:06:50,229 --> 00:06:52,780
+actually move this one down,
+
+140
+00:06:52,780 --> 00:06:55,240
+(clicking)
+
+141
+00:06:55,240 --> 00:07:00,240
+and so now my emitter is a new Sales, okay?
+
+142
+00:07:01,260 --> 00:07:03,912
+And so now it will work exactly the same,
+
+143
+00:07:03,912 --> 00:07:06,350
+and indeed, here we go,
+
+144
+00:07:06,350 --> 00:07:09,560
+and actually this mechanism that I just showed you here.
+
+145
+00:07:09,560 --> 00:07:13,130
+So basically extending the EventEmitter class
+
+146
+00:07:13,130 --> 00:07:15,410
+is exactly how the different node modules,
+
+147
+00:07:15,410 --> 00:07:20,180
+like HTTP, file system, and many other node core modules
+
+148
+00:07:20,180 --> 00:07:23,060
+implements events internally, okay?
+
+149
+00:07:23,060 --> 00:07:24,740
+So all of them actually inherit
+
+150
+00:07:24,740 --> 00:07:26,833
+from the EventEmitter class.
+
+151
+00:07:26,833 --> 00:07:29,420
+Okay, and with this small example working,
+
+152
+00:07:29,420 --> 00:07:32,240
+let's actually now try another thing.
+
+153
+00:07:32,240 --> 00:07:35,700
+So, since I was just now talking about the HTTP module,
+
+154
+00:07:35,700 --> 00:07:38,610
+let me actually demonstrate to you that
+
+155
+00:07:38,610 --> 00:07:42,190
+it is completely based on events, okay?
+
+156
+00:07:42,190 --> 00:07:44,180
+So we have this part working.
+
+157
+00:07:44,180 --> 00:07:47,173
+Let's create a couple of comments here, something,
+
+158
+00:07:48,520 --> 00:07:51,780
+and then create another example down here, all right?
+
+159
+00:07:51,780 --> 00:07:53,530
+And what we're gonna do is to basically
+
+160
+00:07:53,530 --> 00:07:56,080
+create a small web server,
+
+161
+00:07:56,080 --> 00:08:00,770
+and then actually listen to the event that it emits, okay?
+
+162
+00:08:00,770 --> 00:08:04,793
+So, up here we need to import the HTTP module,
+
+163
+00:08:06,480 --> 00:08:08,563
+(typing)
+
+164
+00:08:11,856 --> 00:08:14,606
+And then down here we can use it.
+
+165
+00:08:16,120 --> 00:08:17,690
+So we're creating a server,
+
+166
+00:08:17,690 --> 00:08:19,980
+and now I'm gonna do it a little bit different
+
+167
+00:08:19,980 --> 00:08:23,870
+than we did it in the first intersection okay?
+
+168
+00:08:23,870 --> 00:08:26,380
+But it actually works the exact same way.
+
+169
+00:08:26,380 --> 00:08:30,030
+So all I'm gonna do here is now http.createserver
+
+170
+00:08:32,630 --> 00:08:34,040
+and just like this,
+
+171
+00:08:34,040 --> 00:08:35,830
+and now what I'm gonna do is
+
+172
+00:08:35,830 --> 00:08:38,400
+to basically listen to different events
+
+173
+00:08:38,400 --> 00:08:40,113
+that the server will emit.
+
+174
+00:08:41,490 --> 00:08:44,040
+So for that, again, I'm using on,
+
+175
+00:08:44,040 --> 00:08:47,810
+and so if you see .on anywhere in a node project,
+
+176
+00:08:47,810 --> 00:08:50,510
+well, then you already know that you are listening,
+
+177
+00:08:50,510 --> 00:08:55,510
+or that the code is listening for an event, okay?
+
+178
+00:08:56,210 --> 00:08:58,310
+And so the one that we are listening here
+
+179
+00:08:58,310 --> 00:09:02,170
+is the request event, okay?
+
+180
+00:09:02,170 --> 00:09:04,600
+And so now it works just the same as before
+
+181
+00:09:04,600 --> 00:09:05,870
+we have a callback function
+
+182
+00:09:05,870 --> 00:09:09,640
+which gets access to the request and the response.
+
+183
+00:09:09,640 --> 00:09:12,140
+So nothing you at this point we did exactly that
+
+184
+00:09:12,140 --> 00:09:16,223
+in the node farm project, okay?
+
+185
+00:09:17,120 --> 00:09:19,460
+So, console.log
+
+186
+00:09:19,460 --> 00:09:21,543
+(typing)
+
+187
+00:09:22,687 --> 00:09:26,333
+"request received" and then let's also send something back.
+
+188
+00:09:27,650 --> 00:09:29,733
+(typing)
+
+189
+00:09:30,960 --> 00:09:33,610
+Just the same text actually, okay?
+
+190
+00:09:33,610 --> 00:09:36,720
+And, of course, we can listen multiple times
+
+191
+00:09:36,720 --> 00:09:39,481
+to the same event.
+
+192
+00:09:39,481 --> 00:09:41,210
+(clicking)
+
+193
+00:09:41,210 --> 00:09:43,723
+So let's just say here "Another request"
+
+194
+00:09:47,450 --> 00:09:51,850
+using some emoji here just to make it pop a little bit more,
+
+195
+00:09:51,850 --> 00:09:53,080
+and it's not appearing.
+
+196
+00:09:53,080 --> 00:09:54,233
+What's going on here?
+
+197
+00:09:55,500 --> 00:09:56,333
+Ah, here we go.
+
+198
+00:09:57,700 --> 00:09:59,420
+So, listening to a request,
+
+199
+00:09:59,420 --> 00:10:02,563
+and we can also listen to the close event.
+
+200
+00:10:04,020 --> 00:10:07,970
+So, server on close,
+
+201
+00:10:07,970 --> 00:10:09,530
+and that is the event that is fired
+
+202
+00:10:09,530 --> 00:10:14,530
+when the server, as you can imagine, closes down.
+
+203
+00:10:14,616 --> 00:10:16,699
+(typing)
+
+204
+00:10:18,500 --> 00:10:21,740
+Okay, so that is listening to the events,
+
+205
+00:10:21,740 --> 00:10:23,500
+and now, remember, we also have
+
+206
+00:10:23,500 --> 00:10:26,620
+to actually start the server.
+
+207
+00:10:26,620 --> 00:10:28,290
+So, and we start the server up
+
+208
+00:10:28,290 --> 00:10:30,613
+by using server.listen,
+
+209
+00:10:32,990 --> 00:10:36,520
+pass in the port, the address which is
+
+210
+00:10:36,520 --> 00:10:38,463
+localhost again for us in this case,
+
+211
+00:10:39,340 --> 00:10:43,260
+point one, and then, our callback function
+
+212
+00:10:44,170 --> 00:10:46,670
+which is optional but let's include it here again.
+
+213
+00:10:47,722 --> 00:10:49,805
+(typing)
+
+214
+00:10:54,057 --> 00:10:56,340
+"Waiting for requests..."
+
+215
+00:10:56,340 --> 00:10:58,073
+So, let's actually start this,
+
+216
+00:10:59,550 --> 00:11:02,360
+and we see Waiting for request...,
+
+217
+00:11:02,360 --> 00:11:04,830
+and the application is not shutting down,
+
+218
+00:11:04,830 --> 00:11:08,210
+and now you know why it doesn't shut down, right?
+
+219
+00:11:08,210 --> 00:11:10,510
+It is so because the event loop is
+
+220
+00:11:10,510 --> 00:11:13,600
+still waiting for incoming I/O, right?
+
+221
+00:11:13,600 --> 00:11:17,430
+So that's what we learned in the event loop lectures, okay?
+
+222
+00:11:17,430 --> 00:11:22,177
+Now let's actually do a request on port 8,000 on this URL.
+
+223
+00:11:22,177 --> 00:11:24,461
+(clicking)
+
+224
+00:11:24,461 --> 00:11:26,544
+(typing)
+
+225
+00:11:29,000 --> 00:11:29,833
+And here we go.
+
+226
+00:11:29,833 --> 00:11:33,100
+So, we see Request received.
+
+227
+00:11:33,100 --> 00:11:36,659
+So this works because as soon as there is a new request,
+
+228
+00:11:36,659 --> 00:11:41,659
+the server automatically emits the request object, okay?
+
+229
+00:11:42,030 --> 00:11:44,450
+And we can see that here of course,
+
+230
+00:11:44,450 --> 00:11:45,600
+and here in the console,
+
+231
+00:11:45,600 --> 00:11:48,193
+we see our Request received string.
+
+232
+00:11:49,130 --> 00:11:51,831
+I actually wanted to get another one here.
+
+233
+00:11:51,831 --> 00:11:56,135
+So, we can, of course, only send one response.
+
+234
+00:11:56,135 --> 00:12:00,973
+So here I should have another console.log instead.
+
+235
+00:12:03,000 --> 00:12:06,533
+So let, exit this, start it up again,
+
+236
+00:12:08,190 --> 00:12:09,023
+reload,
+
+237
+00:12:10,340 --> 00:12:12,790
+and, yeah, so now we get Request received,
+
+238
+00:12:12,790 --> 00:12:15,170
+which is from this first EventListener,
+
+239
+00:12:15,170 --> 00:12:18,930
+and another request from this second EventListener.
+
+240
+00:12:18,930 --> 00:12:20,690
+One thing that you're probably noticing
+
+241
+00:12:20,690 --> 00:12:24,750
+is that each of these here actually is logged twice.
+
+242
+00:12:24,750 --> 00:12:27,720
+So that means that the server is actually
+
+243
+00:12:27,720 --> 00:12:31,000
+emitting the request event twice as well.
+
+244
+00:12:31,000 --> 00:12:33,104
+So let's see why that is.
+
+245
+00:12:33,104 --> 00:12:35,930
+(typing)
+
+246
+00:12:35,930 --> 00:12:40,643
+So console.log, request.url.
+
+247
+00:12:41,510 --> 00:12:43,240
+So with that, we can now get access
+
+248
+00:12:43,240 --> 00:12:46,264
+to the URL of the request.
+
+249
+00:12:46,264 --> 00:12:49,230
+(clicking)
+
+250
+00:12:49,230 --> 00:12:50,300
+Let's quit it here.
+
+251
+00:12:50,300 --> 00:12:51,373
+Run it again,
+
+252
+00:12:53,030 --> 00:12:53,863
+reload,
+
+253
+00:12:54,970 --> 00:12:58,300
+and so we have one for the root URL,
+
+254
+00:12:58,300 --> 00:13:01,510
+and then one for the favicon.ico
+
+255
+00:13:01,510 --> 00:13:03,880
+So browsers automatically try to request
+
+256
+00:13:03,880 --> 00:13:07,140
+a favicon for each website, okay?
+
+257
+00:13:07,140 --> 00:13:12,140
+So that is why each of these appeared twice actually, okay?
+
+258
+00:13:12,500 --> 00:13:14,520
+So, you see that not always we have
+
+259
+00:13:14,520 --> 00:13:18,020
+to actually also emit events.
+
+260
+00:13:18,020 --> 00:13:22,390
+That is more when we try to use the EventEmitter on our own.
+
+261
+00:13:22,390 --> 00:13:24,520
+So basically, when we're trying to use
+
+262
+00:13:24,520 --> 00:13:26,860
+our custom events in our applications.
+
+263
+00:13:26,860 --> 00:13:27,740
+In this case, of course,
+
+264
+00:13:27,740 --> 00:13:30,450
+we have to emit the events ourself,
+
+265
+00:13:30,450 --> 00:13:33,260
+but if we're using a built in node module,
+
+266
+00:13:33,260 --> 00:13:35,760
+then these functions in there will many times
+
+267
+00:13:35,760 --> 00:13:37,460
+emit their own events,
+
+268
+00:13:37,460 --> 00:13:39,530
+and all we have to do is to listen to them.
+
+269
+00:13:39,530 --> 00:13:42,030
+So that's exactly what we did here,
+
+270
+00:13:42,030 --> 00:13:43,140
+and with that, I think,
+
+271
+00:13:43,140 --> 00:13:46,040
+you now know all you need to know about events,
+
+272
+00:13:46,040 --> 00:13:49,023
+and are ready to come with me to the next video.
+
